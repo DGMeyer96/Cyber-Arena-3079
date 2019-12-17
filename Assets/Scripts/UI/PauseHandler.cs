@@ -53,8 +53,6 @@ public class PauseHandler : MonoBehaviour
         Debug.Log("Loading: Main Menu");
         PlayerPrefs.SetInt("LevelToLoad", 0);
         player.SaveGame();
-        //SceneManager.LoadScene(0);
-        //SceneManager.LoadScene(1);
         animator.SetTrigger("FadeOut");
         Time.timeScale = 1f;
     }
@@ -73,26 +71,16 @@ public class PauseHandler : MonoBehaviour
 
     private void DisableControl()
     {
-        //player.GetComponent<CompassHandler>().enabled = false;
         player.GetComponent<PlayerCharacterController>().enabled = false;
-        //player.GetComponentInChildren<eyelook>().enabled = false;
     }
 
     private void EnableControl()
     {
         player.GetComponent<PlayerCharacterController>().enabled = true;
-        //player.GetComponentInChildren<eyelook>().enabled = true;
     }
 
     public void OnFadeOutComplete()
     {
         SceneManager.LoadScene(1);
     }
-    /*
-    public void AutosaveComplete()
-    {
-        Debug.Log("Autosave Complete");
-        animator.SetBool("Saving", false);
-    }
-    */
 }
