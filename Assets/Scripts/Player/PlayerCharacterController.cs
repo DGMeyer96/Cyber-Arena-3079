@@ -130,14 +130,38 @@ public class PlayerCharacterController : MonoBehaviour
         {
             Debug.DrawRay(pos, dir * 5, Color.green);
 
-            pos = pos + (transform.forward * radius) + (transform.up * radius);
-            Debug.DrawRay(pos, transform.up * 5, Color.red);
-            
-            if (Physics.SphereCast(pos, 0.2f, transform.up, out var hit2, 5f, WallLayer))
-            {
-                Debug.Log(hit2.point);
 
+            Vector3 posdown = hit.point + (Vector3.up * height*2);
+            Debug.DrawRay(posdown, Vector3.down * 5, Color.gray);
+            if (Physics.SphereCast(posdown, .1f, Vector3.down, out var hit2))//top of the wall found
+            {
+                Debug.DrawRay(hit2.point +(Vector3.up * .3f), transform.forward * 5, Color.green);
+                if(Physics.Raycast(hit2.point + (Vector3.up * .3f), transform.forward, 1f))//if there is something right above the top of the wall then palyer cant get here
+                {
+                    Debug.Log("WALL");
+                }
+                else 
+                {
+                    if (hit2.point.y < hit.point.y)//wall is present cause first raycast detected wall but the second raycast did not.  this means it is to tall tob e detected
+                    {
+                        Debug.Log("Wall");
+                    }
+                    else //the area should be open
+                    {
+                        Vector3 pos1 = hit2.point + (Vector3.up * (height - radius));
+                        Vector3 pos2 = hit2.point + (Vector3.up * radius);
+
+                        Debug.DrawRay(pos1, transform.forward * 5, Color.green);
+                        Debug.DrawRay(pos2, transform.forward * 5, Color.green);
+
+                        if (!Physics.CapsuleCast(pos1, pos2, radius, Vector3.down, height))
+                        {
+                            Debug.Log("NO WALL THANK CHRIST");
+                        }
+                    }
+                }
             }
+
         }
     }
 
