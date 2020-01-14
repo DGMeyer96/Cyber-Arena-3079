@@ -147,20 +147,18 @@ public class PlayerCharacterController : MonoBehaviour
                     {
                         Vector3 pos1 = hit2.point + (Vector3.up * (height - radius));
                         Vector3 pos2 = hit2.point + (Vector3.up * radius);
-
-                       // Debug.DrawRay(pos1, transform.forward * 5, Color.red);
                         Debug.DrawRay(pos2, transform.forward * 5, Color.green);
-
-                        if (!Physics.CapsuleCast(pos1, pos2, radius, Vector3.down, height))//send cast down to see if the ledge is open send another cast up to see if there is a wall above you
+                        Physics.SphereCast(pos1, radius, Vector3.down, out var hit3, height - (radius * 2));
+                        if (hit.point.y < pos2.y)//send cast down to see if the ledge is open send another cast up to see if there is a wall above you
                         {
-                            if (!Physics.Raycast(transform.position, transform.up, height*2))//see if there is a block above
+                            if (!Physics.Raycast(transform.position, transform.up, height * 2))//see if there is a block above
                             {
-                                Debug.DrawRay(transform.position + (Vector3.up * (height * 2)), transform.forward * 4, Color.blue);
+                                Debug.DrawRay(transform.position + (Vector3.up * (height * 2)), transform.forward * 3, Color.blue);
                                 if (!Physics.SphereCast(transform.position + (Vector3.up * (height * 2)), radius, transform.forward, out var hit4, 3f))//room in front
                                 {
                                     Debug.Log("room");
                                 }
-                            }                        
+                            }
                         }
                     }
                 }
