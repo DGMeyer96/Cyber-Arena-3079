@@ -122,14 +122,11 @@ public class PlayerCharacterController : MonoBehaviour
     }
 
     void Climb(){
-        //if(Physics.SphereCast(transform.position, 0.25f, transform.forward, out var hit, 2f, WallLayer))//wall hit
         Vector3 pos = transform.position + (Vector3.up * height / 3f) + (transform.forward * radius / 2f);
-        Vector3 dir = transform.TransformDirection(new Vector3(0, -0.5f, 1).normalized);
 
-        if(Physics.SphereCast(pos, 0.2f, dir, out var hit, 3f, WallLayer))//wall hit
+        if(Physics.SphereCast(pos, 0.2f, transform.forward, out var hit, 3f, WallLayer))//wall hit
         {
-            Debug.DrawRay(pos, dir * 5, Color.green);
-
+            Debug.DrawRay(pos, transform.forward * 5, Color.green);
 
             Vector3 posdown = hit.point + (Vector3.up * height*2);
             Debug.DrawRay(posdown, Vector3.down * 5, Color.gray);
@@ -151,17 +148,23 @@ public class PlayerCharacterController : MonoBehaviour
                         Vector3 pos1 = hit2.point + (Vector3.up * (height - radius));
                         Vector3 pos2 = hit2.point + (Vector3.up * radius);
 
-                        Debug.DrawRay(pos1, transform.forward * 5, Color.green);
+                       // Debug.DrawRay(pos1, transform.forward * 5, Color.red);
                         Debug.DrawRay(pos2, transform.forward * 5, Color.green);
 
-                        if (!Physics.CapsuleCast(pos1, pos2, radius, Vector3.down, height))
+                        if (!Physics.CapsuleCast(pos1, pos2, radius, Vector3.down, height))//send cast down to see if the ledge is open send another cast up to see if there is a wall above you
                         {
-                            Debug.Log("NO WALL THANK CHRIST");
+                            if (!Physics.Raycast(transform.position, transform.up, height*2))//see if there is a block above
+                            {
+                                Debug.DrawRay(transform.position + (Vector3.up * (height * 2)), transform.forward * 4, Color.blue);
+                                if (!Physics.SphereCast(transform.position + (Vector3.up * (height * 2)), radius, transform.forward, out var hit4, 3f))//room in front
+                                {
+                                    Debug.Log("room");
+                                }
+                            }                        
                         }
                     }
                 }
             }
-
         }
     }
 
