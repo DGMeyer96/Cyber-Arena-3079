@@ -6,49 +6,38 @@ public class PlayerCharacterController : MonoBehaviour
 {
     public CharacterController CharController;
 
-    //How fast character moves
     public float MoveSpeed = 12f;
-    //Gravity
-    public float Gravity = -9.81f;
     public float JumpHeight = 3f;
-
-    public float SlideSpeed = 3000f;
+    public float SlideSpeed = 3000f;//controls slide speed
+    private float TempSlideSpeed;
     public float slidedec = 10f;
+    public float jetpackfuel; //current fuel in the jetpack
+    private float DblJump;//tracks how many jumps the palyer has done
+    private float JumpTimer;//sets a timer before the palyer can double jump
+    private float fallmult = 2.5f; //increase gravity pull for better feel
+    public float Gravity = -9.81f;
+    public float GroundDistance = 0.4f;
+    private float CrouchTimer;//sets a timer before the palyer can double jump
+    private float height;//height of the character controller
+    private float radius;//radius of the character controller 
 
     public Transform GroundCheck;
-    //Radius for checking for floor
-    public float GroundDistance = 0.4f;
     public LayerMask GroundMask;
     public LayerMask VualtLayer;
     public LayerMask WallLayer;
+    private Vector3 SlideForce; //Force for sliding;
+    private Vector3 slideDIR;
+    private Vector3 Velocity;
+    private Vector3 Vaultpos;//new pos after vualting
 
-
-    public float jetpackfuel; //current fuel in the jetpack
-
-    private float DblJump;//tracks how many jumps the palyer has done
-    private float JumpTimer;//sets a timer before the palyer can double jump
-
-    //Used for gravity
-    Vector3 Velocity;
-
-    public bool IsGrounded;
-
-    private float fallmult = 2.5f; //increase gravity pull for better feel
 
     public bool IsCrouching; //keeps track if the palyer is crouching or not
-    private float height;
-    private float radius;
     public bool CanStand;//wont let palyer stands if something is blocking him
-    private float CrouchTimer;//sets a timer before the palyer can double jump
-
-    Vector3 SlideForce; //Force for sliding;
     public bool sliding;
     private bool firstslide;
-    private float TempSlideSpeed;
-    private Vector3 slideDIR;
-
     public bool IsTouchingWall;
     public bool IsRoomForClimb;
+    public bool IsGrounded;
 
     // Start is called before the first frame update
     void Start()
@@ -65,8 +54,11 @@ public class PlayerCharacterController : MonoBehaviour
     void Update()//things that need to happen only once per frame
     {
         Jump();
-        Vualt();
-        Climb();//used for ledge detection
+        if (!IsCrouching)
+        {
+            Vualt();
+            Climb();//used for ledge detection
+        }
     }
 
     void FixedUpdate()//things that need to happen multiple times per frame
@@ -78,13 +70,10 @@ public class PlayerCharacterController : MonoBehaviour
             IsGrounded = CharController.isGrounded;
         }
 
-
-
         JetPack();//accepst continuous input for jetpack
         Crouch();//accepts continuous input for sliding and crouching
         Slide();//exectues sliding force
         Movement();//executes movement force
-
     }
 
     void Jump()
@@ -118,8 +107,51 @@ public class PlayerCharacterController : MonoBehaviour
 
     void Vualt()
     {
+        Vector3 pos = transform.position + (Vector3.down * height / 3f);
+        if (Physics.SphereCast(pos, radius, transform.forward, out var hit, 2f, VualtLayer) || Physics.SphereCast(pos + (Vector3.up*height/2), radius, transform.forward, out hit, 2f, VualtLayer))//wall hit
+        {
+            Debug.DrawRay(pos, transform.forward * 5, Color.green);
+            Debug.DrawRay(pos + (Vector3.up * height / 2), transform.forward * 5, Color.green);
+            Vector3 posdown = hit.point + (Vector3.up * height * 2);
+            if (Physics.SphereCast(posdown, .1f, Vector3.down, out var hit2, VualtLayer))//top of the wall found
+            {
+                Debug.DrawRay(posdown, Vector3.down * 5, Color.gray);
+                Vector3 pos2 = transform.position + (Vector3.down * height / 3f) + (Vector3.forward * 7f);
 
-
+                if (Physics.Raycast(transform.position + (Vector3.up * height / 2), transform.forward, 3f))//check if there is something blocking the palyers view.  otherwise he cant vualt
+                {
+                    Debug.Log("WALL");
+                }
+                else if (Physics.SphereCast(pos2, radius, transform.forward*-1, out var hit3, 6.5f, VualtLayer) || Physics.SphereCast(pos2 + (Vector3.up * height / 2), radius, transform.forward * -1, out hit3, 6.5f, VualtLayer))//back of the wall found
+                {
+                    Debug.DrawRay(pos2, transform.forward * -1 * 6.5f, Color.red);
+                    Debug.DrawRay(pos2 + (Vector3.up * height / 2), transform.forward * -1 * 6.5f, Color.red);
+                    float dist = Vector3.Distance(hit2.point, hit3.point);//find the width of the wall
+                    if (dist > 3f || dist < .6f)
+                    {
+                        Debug.Log("noVualt");
+                    }
+                    else
+                    {
+                        Debug.Log(dist);
+                        Vaultpos = hit3.point;
+                        Vaultpos.y = transform.position.y;
+                        Vaultpos += (transform.forward * radius * 1.3f);
+                        Debug.DrawRay(Vaultpos, transform.up * 5, Color.blue);//this line represents where the palyer will transport when vualting
+                        Debug.Log("old pos = " + transform.position);
+                        Debug.Log("new pos = " + Vaultpos);
+                    }
+                }
+                else 
+                {
+                    Debug.Log("Nope");
+                }
+            }
+            else
+            { 
+                Debug.Log("Wall");
+            }
+        }
     }
 
     void Climb()
@@ -128,10 +160,10 @@ public class PlayerCharacterController : MonoBehaviour
 
         if (Physics.SphereCast(pos, 0.2f, transform.forward, out var hit, 3f, WallLayer))//wall hit
         {
-            Debug.DrawRay(pos, transform.forward * 5, Color.green);
+            //Debug.DrawRay(pos, transform.forward * 5, Color.green);
 
             Vector3 posdown = hit.point + (Vector3.up * height * 2);
-            Debug.DrawRay(posdown, Vector3.down * 5, Color.gray);
+            //Debug.DrawRay(posdown, Vector3.down * 5, Color.gray);
             if (Physics.SphereCast(posdown, .1f, Vector3.down, out var hit2))//top of the wall found
             {
                 Debug.DrawRay(hit2.point + (Vector3.up * .3f), transform.forward * 5, Color.green);
@@ -149,13 +181,13 @@ public class PlayerCharacterController : MonoBehaviour
                     {
                         Vector3 pos1 = hit2.point + (Vector3.up * (height - radius));
                         Vector3 pos2 = hit2.point + (Vector3.up * radius);
-                        Debug.DrawRay(pos2, transform.forward * 5, Color.green);
+                        //Debug.DrawRay(pos2, transform.forward * 5, Color.green);
                         Physics.SphereCast(pos1, radius, Vector3.down, out var hit3, height - (radius * 2));
                         if (hit.point.y < pos2.y)//send cast down to see if the ledge is open send another cast up to see if there is a wall above you
                         {
                             if (!Physics.Raycast(transform.position, transform.up, height * 2))//see if there is a block above
                             {
-                                Debug.DrawRay(transform.position + (Vector3.up * (height * 2)), transform.forward * 3, Color.blue);
+                                //Debug.DrawRay(transform.position + (Vector3.up * (height * 2)), transform.forward * 3, Color.blue);
                                 if (!Physics.SphereCast(transform.position + (Vector3.up * (height * 2)), radius, transform.forward, out var hit4, 3f))//room in front
                                 {
                                     Debug.Log("room");
