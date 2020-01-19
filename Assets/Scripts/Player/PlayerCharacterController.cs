@@ -66,7 +66,7 @@ public class PlayerCharacterController : MonoBehaviour
     {
         Jump();
         Vualt();
-        Climb();
+        Climb();//used for ledge detection
     }
 
     void FixedUpdate()//things that need to happen multiple times per frame
@@ -77,7 +77,7 @@ public class PlayerCharacterController : MonoBehaviour
         {
             IsGrounded = CharController.isGrounded;
         }
-                      
+
 
 
         JetPack();//accepst continuous input for jetpack
@@ -115,29 +115,31 @@ public class PlayerCharacterController : MonoBehaviour
             JumpTimer += Time.deltaTime;
         }
     }
-       
-    void Vualt() {
+
+    void Vualt()
+    {
 
 
     }
 
-    void Climb(){
+    void Climb()
+    {
         Vector3 pos = transform.position + (Vector3.up * height / 3f) + (transform.forward * radius / 2f);
 
-        if(Physics.SphereCast(pos, 0.2f, transform.forward, out var hit, 3f, WallLayer))//wall hit
+        if (Physics.SphereCast(pos, 0.2f, transform.forward, out var hit, 3f, WallLayer))//wall hit
         {
             Debug.DrawRay(pos, transform.forward * 5, Color.green);
 
-            Vector3 posdown = hit.point + (Vector3.up * height*2);
+            Vector3 posdown = hit.point + (Vector3.up * height * 2);
             Debug.DrawRay(posdown, Vector3.down * 5, Color.gray);
             if (Physics.SphereCast(posdown, .1f, Vector3.down, out var hit2))//top of the wall found
             {
-                Debug.DrawRay(hit2.point +(Vector3.up * .3f), transform.forward * 5, Color.green);
-                if(Physics.Raycast(hit2.point + (Vector3.up * .3f), transform.forward, 1f))//if there is something right above the top of the wall then palyer cant get here
+                Debug.DrawRay(hit2.point + (Vector3.up * .3f), transform.forward * 5, Color.green);
+                if (Physics.Raycast(hit2.point + (Vector3.up * .3f), transform.forward, 1f))//if there is something right above the top of the wall then palyer cant get here
                 {
                     Debug.Log("WALL");
                 }
-                else 
+                else
                 {
                     if (hit2.point.y < hit.point.y)//wall is present cause first raycast detected wall but the second raycast did not.  this means it is to tall tob e detected
                     {
