@@ -6,9 +6,18 @@ using UnityEngine.AI;
 public class EnemyMovement : MonoBehaviour
 {
 
+    public GameObject weapon;
+
     public GameObject[] targetpoints;
     private int locationCounter;
     private NavMeshAgent navMesh;
+    public bool playerDetected = false;
+    public bool isThisLoss = false;
+
+    [SerializeField]
+    private float followTimer = 5.0f;
+
+    public GameObject player;
 
     //[SerializeField]
     public float waitTimer = 2.0f;
@@ -17,7 +26,7 @@ public class EnemyMovement : MonoBehaviour
     {
         navMesh = GetComponent<NavMeshAgent>();
         locationCounter = 0;
-        Debug.Log("Starting");
+        
         navMesh.isStopped = false;
         GoToNextPoint();
     }
@@ -25,10 +34,41 @@ public class EnemyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!navMesh.pathPending && navMesh.remainingDistance < 0.1f)
+        if (!playerDetected)
         {
-            navMesh.isStopped = true;
-            GoToNextPoint();
+            if (!navMesh.pathPending && navMesh.remainingDistance < 0.1f)
+            {
+                navMesh.isStopped = true;
+                GoToNextPoint();
+            }
+        }
+        else if (playerDetected && followTimer >= 0.0f)
+        {
+            
+            if (isThisLoss)
+            {
+                navMesh.isStopped = true;
+                //followTimer -= Time.deltaTime;
+            }
+            else
+            {
+                navMesh.isStopped = false;
+                followTimer -= Time.deltaTime;
+                navMesh.destination = player.transform.position;
+                if(navMesh.remainingDistance < 10.0f)
+                {
+                    weapon.GetComponent<EnemyAttack>().isAttacking = true;
+                }
+                else if(navMesh.remainingDistance > 40.0f)
+                {
+                    weapon.GetComponent<EnemyAttack>().isAttacking = false;
+                }
+            }
+        }
+        if(followTimer <= 0)
+        {
+            playerDetected = false;
+            followTimer = 5.0f;
         }
     }
 
@@ -63,13 +103,4 @@ public class EnemyMovement : MonoBehaviour
             locationCounter = (locationCounter + 1) % targetpoints.Length;
     }
 
-    //void OnCollisionEnter(Collision collider)
-    //{
-    //    if(collider.gameObject.tag == "TargetPoint")
-    //    {
-    //        Debug.Log("Target Reached");
-    //        patrolling = false;
-            
-    //    }
-    //}
 }
