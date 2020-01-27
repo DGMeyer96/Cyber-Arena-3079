@@ -17,7 +17,7 @@ public class MouseLook : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //Time.deltaTime prevents framerate based speed
         float mouseX = Input.GetAxis("Mouse X") * MouseSensitivity * Time.deltaTime;

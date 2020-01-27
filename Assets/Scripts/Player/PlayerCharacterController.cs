@@ -110,17 +110,17 @@ public class PlayerCharacterController : MonoBehaviour
         Vector3 pos = transform.position + (Vector3.down * height / 3f);
         if (Physics.SphereCast(pos, radius, transform.forward, out var hit, 2f, VualtLayer) || Physics.SphereCast(pos + (Vector3.up*height/2), radius, transform.forward, out hit, 2f, VualtLayer))//wall hit
         {
-            Debug.DrawRay(pos, transform.forward * 5, Color.green);
-            Debug.DrawRay(pos + (Vector3.up * height / 2), transform.forward * 5, Color.green);
+            //Debug.DrawRay(pos, transform.forward * 5, Color.green);
+            //Debug.DrawRay(pos + (Vector3.up * height / 2), transform.forward * 5, Color.green);
             Vector3 posdown = hit.point + (Vector3.up * height * 2);
             if (Physics.SphereCast(posdown, .1f, Vector3.down, out var hit2, VualtLayer))//top of the wall found
             {
-                Debug.DrawRay(posdown, Vector3.down * 5, Color.gray);
+                //Debug.DrawRay(posdown, Vector3.down * 5, Color.gray);
                 Vector3 pos2 = transform.position + (Vector3.down * height / 3f) + (Vector3.forward * 7f);
 
                 if (Physics.Raycast(transform.position + (Vector3.up * height / 2), transform.forward, 3f))//check if there is something blocking the palyers view.  otherwise he cant vualt
                 {
-                    Debug.Log("WALL");
+                    //Debug.Log("WALL");
                 }
                 else if (Physics.SphereCast(pos2, radius, transform.forward*-1, out var hit3, 6.5f, VualtLayer) || Physics.SphereCast(pos2 + (Vector3.up * height / 2), radius, transform.forward * -1, out hit3, 6.5f, VualtLayer))//back of the wall found
                 {
@@ -129,27 +129,28 @@ public class PlayerCharacterController : MonoBehaviour
                     float dist = Vector3.Distance(hit2.point, hit3.point);//find the width of the wall
                     if (dist > 3f || dist < .6f)
                     {
-                        Debug.Log("noVualt");
+                        //Debug.Log("noVualt");
                     }
                     else
                     {
-                        Debug.Log(dist);
+                        //Debug.Log(dist);
                         Vaultpos = hit3.point;
                         Vaultpos.y = transform.position.y;
                         Vaultpos += (transform.forward * radius * 1.3f);
-                        Debug.DrawRay(Vaultpos, transform.up * 5, Color.blue);//this line represents where the palyer will transport when vualting
-                        Debug.Log("old pos = " + transform.position);
-                        Debug.Log("new pos = " + Vaultpos);
+                        //Debug.DrawRay(Vaultpos, transform.up * 5, Color.blue);//this line represents where the palyer will transport when vualting
+                        //Debug.Log("old pos = " + transform.position);
+                        //Debug.Log("new pos = " + Vaultpos);
+                        Debug.Log("VROOM");
                     }
                 }
                 else 
                 {
-                    Debug.Log("Nope");
+                    //Debug.Log("Nope");
                 }
             }
             else
             { 
-                Debug.Log("Wall");
+               // Debug.Log("Wall");
             }
         }
     }
@@ -166,16 +167,16 @@ public class PlayerCharacterController : MonoBehaviour
             //Debug.DrawRay(posdown, Vector3.down * 5, Color.gray);
             if (Physics.SphereCast(posdown, .1f, Vector3.down, out var hit2))//top of the wall found
             {
-                Debug.DrawRay(hit2.point + (Vector3.up * .3f), transform.forward * 5, Color.green);
+                //Debug.DrawRay(hit2.point + (Vector3.up * .3f), transform.forward * 5, Color.green);
                 if (Physics.Raycast(hit2.point + (Vector3.up * .3f), transform.forward, 1f))//if there is something right above the top of the wall then palyer cant get here
                 {
-                    Debug.Log("WALL");
+                    //Debug.Log("WALL");
                 }
                 else
                 {
                     if (hit2.point.y < hit.point.y)//wall is present cause first raycast detected wall but the second raycast did not.  this means it is to tall tob e detected
                     {
-                        Debug.Log("Wall");
+                        //Debug.Log("Wall");
                     }
                     else //the area should be open
                     {
@@ -190,7 +191,7 @@ public class PlayerCharacterController : MonoBehaviour
                                 //Debug.DrawRay(transform.position + (Vector3.up * (height * 2)), transform.forward * 3, Color.blue);
                                 if (!Physics.SphereCast(transform.position + (Vector3.up * (height * 2)), radius, transform.forward, out var hit4, 3f))//room in front
                                 {
-                                    Debug.Log("room");
+                                    Debug.Log("WROOM");
                                 }
                             }
                         }
