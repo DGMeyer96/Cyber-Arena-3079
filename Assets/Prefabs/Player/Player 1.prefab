@@ -213,29 +213,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharController: {fileID: 1907749398364237074}
   MoveSpeed: 12
-  Gravity: -9.81
   JumpHeight: 4
   SlideSpeed: 7500
   slidedec: 25
-  GroundCheck: {fileID: 1907749398364237085}
+  jetpackfuel: 0
+  Gravity: -9.81
   GroundDistance: 0.4
+  GroundCheck: {fileID: 1907749398364237085}
   GroundMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 256
   VualtLayer:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 1024
   WallLayer:
     serializedVersion: 2
-    m_Bits: 1024
-  jetpackfuel: 0
-  IsGrounded: 0
+    m_Bits: 1536
   IsCrouching: 0
   CanStand: 0
   sliding: 0
   IsTouchingWall: 0
-  IsTouchingVualt: 0
-  wallcheck: {fileID: 0}
+  IsRoomForClimb: 0
+  IsGrounded: 0
 --- !u!114 &4544333354002494367
 MonoBehaviour:
   m_ObjectHideFlags: 0
