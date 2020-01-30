@@ -88,13 +88,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharController: {fileID: 2695713218558350049}
   MoveSpeed: 12
-  Gravity: -9.81
   JumpHeight: 3
+  SlideSpeed: 3000
+  slidedec: 10
+  jetpackfuel: 0
+  Gravity: -9.81
+  GroundDistance: 0.4
   GroundCheck: {fileID: 7172044550768584073}
   GroundMask:
     serializedVersion: 2
     m_Bits: 512
-  GroundDistance: 0.4
+  VualtLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  WallLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  IsCrouching: 0
+  CanStand: 0
+  sliding: 0
+  IsTouchingWall: 0
+  IsRoomForClimb: 0
+  IsGrounded: 0
 --- !u!1 &2695713219271054894
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +230,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2695713219322246558}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -258,7 +273,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2695713219322246558}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!114 &2695713219322246556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,7 +281,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2695713219322246558}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
   m_Name: 
