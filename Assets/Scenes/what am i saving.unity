@@ -1664,7 +1664,7 @@ GameObject:
   - component: {fileID: 2012731275}
   - component: {fileID: 2012731274}
   - component: {fileID: 2012731273}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1738,31 +1738,31 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2012731272}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 52.49, y: 2.5, z: 40.77}
-  m_LocalScale: {x: 0.6756414, y: 0.33043998, z: 8.27855}
+  m_LocalPosition: {x: 52.49, y: 0.09, z: 40.77}
+  m_LocalScale: {x: 2, y: 5, z: 8.27855}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2104921143 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2143460726130704318, guid: a4019d075c71ef8498d86032cc6d2dd7,
-    type: 3}
-  m_PrefabInstance: {fileID: 4544333354146665919}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2104921144
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2104921143}
+  m_GameObject: {fileID: 2499406771321989633}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d59fa174d19fa14c859aee8db32f553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedWeapon: 0
+--- !u!1 &2499406771321989633 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2143460726130704318, guid: a4019d075c71ef8498d86032cc6d2dd7,
+    type: 3}
+  m_PrefabInstance: {fileID: 4544333354146665919}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4544333354146665919
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1770,6 +1770,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 25068650, guid: a4019d075c71ef8498d86032cc6d2dd7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1907749398364237073, guid: a4019d075c71ef8498d86032cc6d2dd7,
         type: 3}
       propertyPath: m_Name
@@ -1828,6 +1832,11 @@ PrefabInstance:
     - target: {fileID: 1907749398364237085, guid: a4019d075c71ef8498d86032cc6d2dd7,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2143460726130704318, guid: a4019d075c71ef8498d86032cc6d2dd7,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2852169398033301143, guid: a4019d075c71ef8498d86032cc6d2dd7,
