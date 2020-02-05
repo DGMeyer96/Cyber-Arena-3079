@@ -117,7 +117,7 @@ public class PlayerCharacterController : MonoBehaviour
             if (Physics.SphereCast(posdown, .1f, Vector3.down, out var hit2, VualtLayer))//top of the wall found
             {
                 Debug.DrawRay(posdown, Vector3.down * 5, Color.gray);
-                Vector3 pos2 = transform.position + (Vector3.down * height / 3f) + (Vector3.forward * 7f);
+                Vector3 pos2 = transform.position + (Vector3.down * height / 3f) + (transform.forward * 7f);
                 Debug.DrawRay(pos2, transform.forward * -1 * 6.5f, Color.red);
                 Debug.DrawRay(pos2 + (Vector3.up * height / 2), transform.forward * -1 * 6.5f, Color.red);
 

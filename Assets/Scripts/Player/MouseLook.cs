@@ -5,10 +5,16 @@ using UnityEngine;
 public class MouseLook : MonoBehaviour
 {
     public float MouseSensitivity = 100f;
-
+    public float speed = 100f;
     public Transform PlayerBody;
-
+    public Transform weapon;
+    public Transform arm;
     float xRotation = 0f;
+
+    public float timer = .1f;
+    float countdown;
+    Quaternion rotation;
+
 
     // Start is called before the first frame update
     void Start()
@@ -22,14 +28,30 @@ public class MouseLook : MonoBehaviour
         //Time.deltaTime prevents framerate based speed
         float mouseX = Input.GetAxis("Mouse X") * MouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * MouseSensitivity * Time.deltaTime;
-
         xRotation -= mouseY;
         //Prevents over rotation = looking backward
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
         //Rotate the body and camera
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         PlayerBody.Rotate(Vector3.up * mouseX);
+        //updates the weapon position
+        weapon.position = arm.position;//must be in fixed update
+        rotation = Quaternion.Lerp(weapon.rotation, transform.rotation, Time.deltaTime * speed);
+
+        weapon.transform.localRotation = rotation;
+    }
+
+    void LateUpdate()
+    {
+        //slerps the weapon position to be more realistic
+        if (countdown > timer)
+        {
+            countdown = 0;
+        }
+        else
+        {
+            countdown += Time.deltaTime;
+        }
 
     }
 }
