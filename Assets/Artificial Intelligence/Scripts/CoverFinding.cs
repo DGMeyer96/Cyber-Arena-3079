@@ -5,17 +5,6 @@ using UnityEngine;
 public class CoverFinding : MonoBehaviour
 {
     public GameObject enemyObject;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -25,7 +14,7 @@ public class CoverFinding : MonoBehaviour
             {
                 Debug.Log("Cover Found.");
                 enemyObject.GetComponent<EnemyMovement>().takeCover = true;
-                enemyObject.GetComponent<EnemyMovement>().coverLocation = other.gameObject.transform.position;
+                enemyObject.GetComponent<EnemyMovement>().coverLocation = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
             }
         }
     }
