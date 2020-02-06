@@ -14,6 +14,9 @@ public class EnemyMovement : MonoBehaviour
     public bool playerDetected = false;
     public bool isThisLoss = false;
 
+    public Vector3 coverLocation;
+    public bool takeCover = false;
+
     [SerializeField]
     private float followTimer = 5.0f;
 
@@ -44,24 +47,34 @@ public class EnemyMovement : MonoBehaviour
         }
         else if (playerDetected && followTimer >= 0.0f)
         {
-            
-            if (isThisLoss)
+            if (!takeCover)
             {
-                navMesh.isStopped = true;
-                //followTimer -= Time.deltaTime;
+                if (isThisLoss)
+                {
+                    navMesh.isStopped = true;
+                    //followTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    navMesh.isStopped = false;
+                    followTimer -= Time.deltaTime;
+                    navMesh.destination = player.transform.position;
+                    if (navMesh.remainingDistance < 10.0f)
+                    {
+                        weapon.GetComponent<EnemyAttack>().isAttacking = true;
+                    }
+                    else if (navMesh.remainingDistance > 40.0f)
+                    {
+                        weapon.GetComponent<EnemyAttack>().isAttacking = false;
+                    }
+                }
             }
             else
             {
-                navMesh.isStopped = false;
-                followTimer -= Time.deltaTime;
-                navMesh.destination = player.transform.position;
-                if(navMesh.remainingDistance < 10.0f)
+                MoveToCover();
+                if(navMesh.remainingDistance < 2.0f)
                 {
-                    weapon.GetComponent<EnemyAttack>().isAttacking = true;
-                }
-                else if(navMesh.remainingDistance > 40.0f)
-                {
-                    weapon.GetComponent<EnemyAttack>().isAttacking = false;
+                    navMesh.isStopped = true;
                 }
             }
         }
@@ -70,6 +83,11 @@ public class EnemyMovement : MonoBehaviour
             playerDetected = false;
             followTimer = 5.0f;
         }
+    }
+
+    void MoveToCover()
+    {
+        navMesh.destination = coverLocation;
     }
 
     void GoToNextPoint()
