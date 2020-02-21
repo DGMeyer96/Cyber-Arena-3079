@@ -17,6 +17,8 @@ public class PlayerCharacterController : MonoBehaviour
     private float fallmult = 2.5f; //increase gravity pull for better feel
     public float Gravity = -9.81f;
     public float GroundDistance = 0.4f;
+    public float SlopeRayLength = 1f;
+    public float SlopeForce = 1f;
     private float CrouchTimer;//sets a timer before the palyer can double jump
     private float height;//height of the character controller
     private float radius;//radius of the character controller 
@@ -39,6 +41,8 @@ public class PlayerCharacterController : MonoBehaviour
     public bool IsTouchingWall;
     public bool IsRoomForClimb;
     public bool IsGrounded;
+    public bool Jumping;
+    public bool IsOnSlope;
 
     // Start is called before the first frame update
     void Start()
@@ -70,11 +74,16 @@ public class PlayerCharacterController : MonoBehaviour
         {
             IsGrounded = CharController.isGrounded;
         }
+        if (IsGrounded)
+        {
+            Jumping = false;
+        }
 
         JetPack();//accepst continuous input for jetpack
         Crouch();//accepts continuous input for sliding and crouching
         Slide();//exectues sliding force
         Movement();//executes movement force
+        OnSlope();//executes additional gravity to cause palyer to hug slopes
     }
 
     void Jump()
@@ -92,12 +101,14 @@ public class PlayerCharacterController : MonoBehaviour
             Velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
             DblJump = 1;
+            Jumping = true;
         }
 
         else if (Input.GetButtonDown("Jump") && !IsGrounded && DblJump == 1 && Input.GetAxis("Sprint") == 0) // if jumping in air and not using jetpack    && JumpTimer > .3f
         {
             Velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
             DblJump = 2;
+            Jumping = true;
         }
 
         if (DblJump == 1 && JumpTimer < .5f && !IsGrounded)
@@ -330,5 +341,34 @@ public class PlayerCharacterController : MonoBehaviour
         //applies forces on the y axis from jumping or gravity or jetpack
         //-9.81m/s * t * t
         CharController.Move(Velocity * Time.deltaTime);
+    }
+    
+    void OnSlope()
+    {
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
+
+        Vector3 FowardMove = transform.forward * z;
+        Vector3 rightmvoe = transform.right * x;
+
+        if (Jumping || Input.GetAxis("Jump") != 0)
+        {
+            IsOnSlope = false;
+            Jump();
+            return;
+        }
+
+        if (Physics.Raycast(transform.position, Vector3.down, out var hit, height / 2 * SlopeRayLength))
+        {
+            if (hit.normal != Vector3.up)
+            {
+                IsOnSlope = true;
+            }
+        }
+
+        if ((z != 0 || x != 0) && IsOnSlope)
+        {
+            CharController.Move(Vector3.down * height / 2 * SlopeForce * Time.deltaTime);
+        }
     }
 }

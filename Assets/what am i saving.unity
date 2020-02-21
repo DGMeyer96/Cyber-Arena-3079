@@ -388,13 +388,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 41548720}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 78.87, y: 18.11787, z: 41.709106}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 69.79, y: 18.11787, z: 45.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &210017454
 GameObject:
   m_ObjectHideFlags: 0
@@ -2607,10 +2607,45 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1396933671352407757, guid: 616701f05dfe05b44a1863832146f6a1,
+    - target: {fileID: 172829673360837053, guid: 616701f05dfe05b44a1863832146f6a1,
         type: 3}
-      propertyPath: speed
-      value: 10
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1308180249982745104, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: SlopeRayLength
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1308180249982745104, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: SlopeForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1396933671277114744, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1396933671352407752, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1396933671352407755, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 3895
+      objectReference: {fileID: 0}
+    - target: {fileID: 1396933671654928820, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2680721889667427515, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: m_TagString
+      value: Weapon
       objectReference: {fileID: 0}
     - target: {fileID: 3894486841575639174, guid: 616701f05dfe05b44a1863832146f6a1,
         type: 3}
@@ -2672,15 +2707,45 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bens Player
       objectReference: {fileID: 0}
-    - target: {fileID: 3894486843448940641, guid: 616701f05dfe05b44a1863832146f6a1,
+    - target: {fileID: 3894486841688069705, guid: 616701f05dfe05b44a1863832146f6a1,
         type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.5
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
-    - target: {fileID: 4339310162352156944, guid: 616701f05dfe05b44a1863832146f6a1,
+    - target: {fileID: 3894486842268806258, guid: 616701f05dfe05b44a1863832146f6a1,
         type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.5
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3894486842675157210, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3894486842873510190, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3894486843025466163, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3894486843062174603, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3894486843448940640, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4627684669873821307, guid: 616701f05dfe05b44a1863832146f6a1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 616701f05dfe05b44a1863832146f6a1, type: 3}
