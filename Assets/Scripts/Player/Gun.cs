@@ -11,7 +11,10 @@ public class Gun : MonoBehaviour
     public bool IsAutomatic = false;
 
     public Camera fpsCamera;
-    //public VisualEffect MuzzleFlash;
+    public VisualEffect Bulletfire;
+    public static readonly string Target = "Target";
+    public static readonly string Velocity = "velocity";
+
     //public GameObject ImpactEffect;
 
     private float NextTimeToFire = 0f;
@@ -24,18 +27,30 @@ public class Gun : MonoBehaviour
             if (Input.GetButton("Fire1") && Time.time >= NextTimeToFire)
             {
                 NextTimeToFire = Time.time + 1f / FireRate;
+                Bulletfire.SendEvent("OnFiring");
                 Shoot();
                 Debug.Log("Firing Gun - Full-Auto");
+            }
+            else if (!(Input.GetButton("Fire1")))
+            {
+               Bulletfire.SendEvent("OnStopFiring");
             }
         }
         else
         {
             if (Input.GetButtonDown("Fire1"))
             {
+                Bulletfire.SendEvent("OnFiring");
                 Shoot();
                 Debug.Log("Firing Gun - Semi-Auto");
             }
-        }   
+            else if (!(Input.GetButtonDown("Fire1")))
+            {
+                Bulletfire.SendEvent("OnStopFiring");
+            }
+        }
+        
+
     }
 
     void Shoot()
@@ -43,11 +58,18 @@ public class Gun : MonoBehaviour
         //MuzzleFlash.Play();
 
         RaycastHit hit;
+
+        Bulletfire.SendEvent("OnBulletFire");
+        Bulletfire.SetVector3(Velocity, fpsCamera.transform.forward * 5);
+
+
         if (Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, Range))
         {
             Debug.Log(hit.transform.name);
-
+            Bulletfire.SetVector3(Target, hit.transform.position);
+            Debug.Log("This is direction" + fpsCamera.transform.forward);
             Enemy enemy = hit.transform.GetComponent<Enemy>();
+            
 
             if(enemy != null)
             {
