@@ -6,13 +6,15 @@ public class PlayerCharacterController : MonoBehaviour
 {
     public CharacterController CharController;
 
+    public AmmoTracker ammoTracker;
+
     public float MoveSpeed = 12f;
     public float JumpHeight = 3f;
     public float SlideSpeed = 3000f;//controls slide speed
     private float TempSlideSpeed;
     public float slidedec = 10f;
     public float jetpackfuel; //current fuel in the jetpack
-    private float DblJump;//tracks how many jumps the palyer has done
+    public float DblJump;//tracks how many jumps the palyer has done
     private float JumpTimer;//sets a timer before the palyer can double jump
     private float fallmult = 2.5f; //increase gravity pull for better feel
     public float Gravity = -9.81f;
@@ -369,6 +371,35 @@ public class PlayerCharacterController : MonoBehaviour
         if ((z != 0 || x != 0) && IsOnSlope)
         {
             CharController.Move(Vector3.down * height / 2 * SlopeForce * Time.deltaTime);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Rifle")
+        {
+            if (ammoTracker.RifleAmmo <= ammoTracker.RifleMaxAmmo)
+            {
+                other.gameObject.SetActive(false);
+                ammoTracker.RifleAmmo += 50;
+            }
+        }        
+        if (other.gameObject.tag == "Sniper")
+        {
+            if (ammoTracker.SniperAmmo <= ammoTracker.SniperMaxAmmo)
+            {
+                other.gameObject.SetActive(false);
+                ammoTracker.SniperAmmo += 10;
+            }
+        }        
+        if (other.gameObject.tag == "Heavy")
+        {
+            if (ammoTracker.HeavyAmmo <= ammoTracker.HeavyMaxAmmo)
+            {
+                other.gameObject.SetActive(false);
+                ammoTracker.HeavyAmmo += 5;
+            }
+
         }
     }
 }

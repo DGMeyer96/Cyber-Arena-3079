@@ -32,6 +32,9 @@ public class MouseLook : MonoBehaviour
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         PlayerBody.Rotate(Vector3.up * mouseX);
 
+
+        //use these next lines if you want to slerp gun.  gun must not be aprented to palyer.
+        //this may effect root motion
         //use this below if you want weapon to slerp isntead of being rigid
         //updates the weapon rotation
         rotation = Quaternion.Lerp(weapon.rotation, transform.rotation, Time.deltaTime * speed);
