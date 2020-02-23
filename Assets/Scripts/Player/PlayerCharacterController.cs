@@ -46,6 +46,9 @@ public class PlayerCharacterController : MonoBehaviour
     public bool Jumping;
     public bool IsOnSlope;
 
+    public bool CanJmp;
+    public float JmpCount;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,7 +56,7 @@ public class PlayerCharacterController : MonoBehaviour
         height = CharController.height;
         radius = CharController.radius;
         IsCrouching = false;
-
+        CanJmp = true;
     }
 
     //fixed update and update contain separate functions for each movement
@@ -76,9 +79,11 @@ public class PlayerCharacterController : MonoBehaviour
         {
             IsGrounded = CharController.isGrounded;
         }
+
         if (IsGrounded)
         {
             Jumping = false;
+            JmpCount = 0;
         }
 
         JetPack();//accepst continuous input for jetpack
@@ -90,32 +95,16 @@ public class PlayerCharacterController : MonoBehaviour
 
     void Jump()
     {
-        //reset double jump if the ground is touched
-        if (IsGrounded && DblJump == 2)
-        {
-            DblJump = 0;
-            JumpTimer = 0;
-        }
-
-        if (Input.GetButtonDown("Jump") && IsGrounded)
-        {
-            //v = Sqrt(h * -2 * g)
-            Velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-
-            DblJump = 1;
-            Jumping = true;
-        }
-
-        else if (Input.GetButtonDown("Jump") && !IsGrounded && DblJump == 1 && Input.GetAxis("Sprint") == 0) // if jumping in air and not using jetpack    && JumpTimer > .3f
+        if (Input.GetButtonDown("Jump") && CanJmp && JmpCount < 2)
         {
             Velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-            DblJump = 2;
             Jumping = true;
+            CanJmp = false;
         }
-
-        if (DblJump == 1 && JumpTimer < .5f && !IsGrounded)
+        if (Input.GetButtonUp("Jump") && !CanJmp && JmpCount < 2)
         {
-            JumpTimer += Time.deltaTime;
+            CanJmp = true;
+            JmpCount++;
         }
     }
 
@@ -378,7 +367,7 @@ public class PlayerCharacterController : MonoBehaviour
     {
         if (other.gameObject.tag == "Rifle")
         {
-            if (ammoTracker.RifleAmmo <= ammoTracker.RifleMaxAmmo)
+            if (ammoTracker.RifleAmmo < ammoTracker.RifleMaxAmmo)
             {
                 other.gameObject.SetActive(false);
                 ammoTracker.RifleAmmo += 50;
@@ -386,7 +375,7 @@ public class PlayerCharacterController : MonoBehaviour
         }        
         if (other.gameObject.tag == "Sniper")
         {
-            if (ammoTracker.SniperAmmo <= ammoTracker.SniperMaxAmmo)
+            if (ammoTracker.SniperAmmo < ammoTracker.SniperMaxAmmo)
             {
                 other.gameObject.SetActive(false);
                 ammoTracker.SniperAmmo += 10;
@@ -394,7 +383,7 @@ public class PlayerCharacterController : MonoBehaviour
         }        
         if (other.gameObject.tag == "Heavy")
         {
-            if (ammoTracker.HeavyAmmo <= ammoTracker.HeavyMaxAmmo)
+            if (ammoTracker.HeavyAmmo < ammoTracker.HeavyMaxAmmo)
             {
                 other.gameObject.SetActive(false);
                 ammoTracker.HeavyAmmo += 5;

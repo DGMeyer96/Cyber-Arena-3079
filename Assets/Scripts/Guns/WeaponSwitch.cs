@@ -117,7 +117,7 @@ public class WeaponSwitch : MonoBehaviour
             {
                 if (SelectedWeapon == 0)
                 {
-                    SelectedWeapon = NumOfWeapons - 1;
+                    SelectedWeapon = 0;
                 }
                 else
                 {
