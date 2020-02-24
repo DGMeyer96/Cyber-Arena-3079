@@ -14,6 +14,9 @@ public class Gun : MonoBehaviour
     public VisualEffect Bulletfire;
     public static readonly string Target = "Target";
     public static readonly string Velocity = "velocity";
+    public static readonly string position = "position";
+   // private Transform temptransform;
+
 
     //public GameObject ImpactEffect;
 
@@ -60,14 +63,23 @@ public class Gun : MonoBehaviour
         RaycastHit hit;
 
         Bulletfire.SendEvent("OnBulletFire");
-        Bulletfire.SetVector3(Velocity, fpsCamera.transform.forward * 5);
+       Vector3 newvelocity;
 
+        //  Bulletfire.SetVector3(Velocity, fpsCamera.transform.forward * 5);
 
-        if (Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, Range))
+        Debug.Log("Gets here");
+        if (Physics.Raycast(transform.position, fpsCamera.transform.forward, out hit,Mathf.Infinity))
         {
+           // newvelocity = (transform.position. - hit.transform.position) / Time.deltaTime;
+        //    Debug.Log("This is velocity" + newvelocity);
+         //   Bulletfire.SetVector3(Velocity, newvelocity);
             Debug.Log(hit.transform.name);
-            Bulletfire.SetVector3(Target, hit.transform.position);
-            Debug.Log("This is direction" + fpsCamera.transform.forward);
+            //temptransform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
+            
+            newvelocity = transform.InverseTransformPoint(hit.point);
+            Bulletfire.SetVector3(Target, newvelocity);
+
+            Debug.Log("This is Target" + hit.point);
             Enemy enemy = hit.transform.GetComponent<Enemy>();
             
 
