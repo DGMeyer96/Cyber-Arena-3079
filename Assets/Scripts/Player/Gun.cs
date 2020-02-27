@@ -9,13 +9,15 @@ public class Gun : MonoBehaviour
     public float ImpactForce = 30f;
 
     public bool IsAutomatic = false;
-
+    public GameObject sparkattack;
     public Camera fpsCamera;
     public VisualEffect Bulletfire;
     public static readonly string Target = "Target";
     public static readonly string Velocity = "velocity";
     public static readonly string position = "position";
-   // private Transform temptransform;
+    public static readonly string SpawnLocation = "SpawnLocation";
+
+    // private Transform temptransform;
 
 
     //public GameObject ImpactEffect;
@@ -30,29 +32,35 @@ public class Gun : MonoBehaviour
             if (Input.GetButton("Fire1") && Time.time >= NextTimeToFire)
             {
                 NextTimeToFire = Time.time + 1f / FireRate;
-                Bulletfire.SendEvent("OnFiring");
+              //  Bulletfire.SendEvent("OnFiring");
                 Shoot();
                 Debug.Log("Firing Gun - Full-Auto");
             }
             else if (!(Input.GetButton("Fire1")))
             {
-               Bulletfire.SendEvent("OnStopFiring");
+            //   Bulletfire.SendEvent("OnStopFiring");
+            //    Bulletfire.SendEvent("OnStopBulletFire");
+
             }
         }
         else
         {
             if (Input.GetButtonDown("Fire1"))
             {
-                Bulletfire.SendEvent("OnFiring");
+            //    Bulletfire.SendEvent("OnFiring");
                 Shoot();
                 Debug.Log("Firing Gun - Semi-Auto");
             }
             else if (!(Input.GetButtonDown("Fire1")))
             {
-                Bulletfire.SendEvent("OnStopFiring");
+
+              //  Bulletfire.SendEvent("OnStopFiring");
+
             }
+
+
         }
-        
+
 
     }
 
@@ -62,7 +70,7 @@ public class Gun : MonoBehaviour
 
         RaycastHit hit;
 
-        Bulletfire.SendEvent("OnBulletFire");
+     //   Bulletfire.SendEvent("OnBulletFire");
        Vector3 newvelocity;
 
         //  Bulletfire.SetVector3(Velocity, fpsCamera.transform.forward * 5);
@@ -77,9 +85,10 @@ public class Gun : MonoBehaviour
             //temptransform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
             
             newvelocity = transform.InverseTransformPoint(hit.point);
-            Bulletfire.SetVector3(Target, newvelocity);
-
-            Debug.Log("This is Target" + hit.point);
+          //  Bulletfire.SetVector3(Target, newvelocity);
+            Bulletfire.SetVector3(SpawnLocation, newvelocity);
+            Bulletfire.SendEvent("OnHit");
+            Debug.Log("This is Target" + newvelocity);
             Enemy enemy = hit.transform.GetComponent<Enemy>();
             
 
