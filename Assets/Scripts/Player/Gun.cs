@@ -90,8 +90,8 @@ public class Gun : MonoBehaviour
             Bulletfire.SendEvent("OnHit");
             Debug.Log("This is Target" + newvelocity);
             Enemy enemy = hit.transform.GetComponent<Enemy>();
-            
-
+            GameObject temp = Instantiate(sparkattack, hit.point, Quaternion.identity);
+            Destroy(temp, 1.0f);
             if(enemy != null)
             {
                 enemy.TakeDamage(Damage);
