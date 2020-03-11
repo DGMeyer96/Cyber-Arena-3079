@@ -10,6 +10,6 @@ public class NetworkCallbacks : Bolt.GlobalEventListener
         var spawnPosition = new Vector3(Random.Range(-8, 8), 7.1f, Random.Range(-8, 8));
 
         // instantiate cube
-        BoltNetwork.Instantiate(BoltPrefabs.BoltPlayer, spawnPosition, Quaternion.identity);
+        BoltNetwork.Instantiate(BoltPrefabs.Player, spawnPosition, Quaternion.identity);
     }
 }

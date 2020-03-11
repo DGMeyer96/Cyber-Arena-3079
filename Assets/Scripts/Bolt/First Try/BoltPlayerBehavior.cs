@@ -5,12 +5,25 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IPlayerState>
 {
     //public CharacterController CharController;
     //private Vector3 Velocity;
+    public Camera EntityCamera;
 
 
     public override void Attached()
     {
         //CharController = gameObject.GetComponent<CharacterController>();
         state.SetTransforms(state.PlayerTransform, transform);
+        //if (entity.IsOwner)
+        //{
+        //    EntityCamera.gameObject.SetActive(true);
+        //}
+    }
+
+    private void Update()
+    {
+        if (entity.IsOwner && EntityCamera.gameObject.activeInHierarchy == false)
+        {
+            EntityCamera.gameObject.SetActive(true);
+        }
     }
 
     public override void SimulateOwner()
