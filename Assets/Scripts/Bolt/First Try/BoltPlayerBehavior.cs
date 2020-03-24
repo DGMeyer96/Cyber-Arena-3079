@@ -4,7 +4,7 @@ using System.Collections;
 public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 {
     public Camera EntityCamera;
-    public CharacterController CharController;
+    private CharacterController CharController;    
 
     public AmmoTracker ammoTracker;
 
@@ -51,6 +51,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 
     public override void Attached()
     {
+        CharController = GetComponent<CharacterController>();
         state.SetTransforms(state.PlayerTransform, transform);
         jetpackfuel = 10f;
         height = CharController.height;
@@ -64,6 +65,10 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         if (entity.IsOwner && EntityCamera.gameObject.activeInHierarchy == false)
         {
             EntityCamera.gameObject.SetActive(true);
+        }        
+        if (entity.IsOwner && CharController.enabled == false)
+        {
+            CharController.enabled = true;
         }
         Jump();
         if (!IsCrouching)
