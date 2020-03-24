@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseLook : MonoBehaviour
+public class MouseLook : Bolt.EntityBehaviour<IBensState>
 {
     public float MouseSensitivity = 100f;
     public float speed = 10f;
     public Transform PlayerBody;
-    public Transform weapon;
+    //public Transform weapon;
     float xRotation = 0f;
 
     Quaternion rotation;
@@ -37,10 +37,10 @@ public class MouseLook : MonoBehaviour
         //this may effect root motion
         //use this below if you want weapon to slerp isntead of being rigid
         //updates the weapon rotation
-        rotation = Quaternion.Lerp(weapon.rotation, transform.rotation, Time.deltaTime * speed);
-        weapon.transform.localRotation = rotation;
+        //rotation = Quaternion.Lerp(weapon.rotation, transform.rotation, Time.deltaTime * speed);
+        //weapon.transform.localRotation = rotation;
 
         //update the position using the camera
-        weapon.transform.position = transform.position;
+        //weapon.transform.position = transform.position;
     }
 }

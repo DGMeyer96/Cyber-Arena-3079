@@ -137,3 +137,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EntityCamera: {fileID: 0}
+  CharController: {fileID: 0}
+  ammoTracker: {fileID: 0}
+  MoveSpeed: 12
+  JumpHeight: 3
+  SlideSpeed: 3000
+  slidedec: 10
+  jetpackfuel: 0
+  DblJump: 0
+  Gravity: -9.81
+  GroundDistance: 0.4
+  SlopeRayLength: 1
+  SlopeForce: 1
+  GroundCheck: {fileID: 0}
+  GroundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  VualtLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  WallLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  IsCrouching: 0
+  CanStand: 0
+  sliding: 0
+  IsTouchingWall: 0
+  IsRoomForClimb: 0
+  IsGrounded: 0
+  Jumping: 0
+  IsOnSlope: 0
+  CanJmp: 0
+  JmpCount: 0
