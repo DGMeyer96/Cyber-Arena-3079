@@ -17,10 +17,8 @@ public class Gun : MonoBehaviour
     public static readonly string position = "position";
     public static readonly string SpawnLocation = "SpawnLocation";
 
-    // private Transform temptransform;
 
 
-    //public GameObject ImpactEffect;
 
     private float NextTimeToFire = 0f;
 
@@ -32,14 +30,11 @@ public class Gun : MonoBehaviour
             if (Input.GetButton("Fire1") && Time.time >= NextTimeToFire)
             {
                 NextTimeToFire = Time.time + 1f / FireRate;
-              //  Bulletfire.SendEvent("OnFiring");
                 Shoot();
                 Debug.Log("Firing Gun - Full-Auto");
             }
             else if (!(Input.GetButton("Fire1")))
             {
-            //   Bulletfire.SendEvent("OnStopFiring");
-            //    Bulletfire.SendEvent("OnStopBulletFire");
 
             }
         }
@@ -47,15 +42,11 @@ public class Gun : MonoBehaviour
         {
             if (Input.GetButtonDown("Fire1"))
             {
-            //    Bulletfire.SendEvent("OnFiring");
                 Shoot();
                 Debug.Log("Firing Gun - Semi-Auto");
             }
             else if (!(Input.GetButtonDown("Fire1")))
             {
-
-              //  Bulletfire.SendEvent("OnStopFiring");
-
             }
 
 
@@ -66,33 +57,28 @@ public class Gun : MonoBehaviour
 
     void Shoot()
     {
-        //MuzzleFlash.Play();
 
         RaycastHit hit;
 
-     //   Bulletfire.SendEvent("OnBulletFire");
        Vector3 newvelocity;
 
-        //  Bulletfire.SetVector3(Velocity, fpsCamera.transform.forward * 5);
 
         Debug.Log("Gets here");
         if (Physics.Raycast(transform.position, fpsCamera.transform.forward, out hit,Mathf.Infinity))
         {
-           // newvelocity = (transform.position. - hit.transform.position) / Time.deltaTime;
-        //    Debug.Log("This is velocity" + newvelocity);
-         //   Bulletfire.SetVector3(Velocity, newvelocity);
             Debug.Log(hit.transform.name);
             //temptransform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
             
             newvelocity = transform.InverseTransformPoint(hit.point);
-          //  Bulletfire.SetVector3(Target, newvelocity);
-            Bulletfire.SetVector3(SpawnLocation, newvelocity);
-            Bulletfire.SendEvent("OnHit");
-            Debug.Log("This is Target" + newvelocity);
-            Enemy enemy = hit.transform.GetComponent<Enemy>();
+            Debug.Log("This is Target" + hit.point);
+            Debug.DrawLine(transform.position, hit.point, Color.green);
+            Enemy enemy = hit.transform.GetComponent<Enemy>();//This will not work wtf change to tags
             GameObject temp = Instantiate(sparkattack, hit.point, Quaternion.identity);
             Destroy(temp, 1.0f);
-            if(enemy != null)
+
+
+/*          So make health scripts and actually do this
+            if (enemy != null)
             {
                 enemy.TakeDamage(Damage);
             }
@@ -101,9 +87,7 @@ public class Gun : MonoBehaviour
             {
                 hit.rigidbody.AddForce(-hit.normal * ImpactForce);
             }
-
-            //GameObject impactGO = Instantiate(ImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            //9Destroy(impactGO, 2f);
+            */
         }
     }
 }
