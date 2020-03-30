@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerCharacterController : MonoBehaviour
 {
+    Animator anim;
     public CharacterController CharController;
 
     public float MoveSpeed = 12f;
@@ -45,7 +46,7 @@ public class PlayerCharacterController : MonoBehaviour
         jetpackfuel = 10f;
         height = CharController.height;
         radius = CharController.radius;
-        IsCrouching = false;
+        IsCrouching = false;        anim = GetComponent<Animator>();
 
     }
 
@@ -88,6 +89,7 @@ public class PlayerCharacterController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && IsGrounded)
         {
             //v = Sqrt(h * -2 * g)
+            anim.SetBool("Jump", true);
             Velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
             DblJump = 1;
@@ -97,6 +99,9 @@ public class PlayerCharacterController : MonoBehaviour
         {
             Velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
             DblJump = 2;
+        }        else
+        {
+            anim.SetBool("Jump", false);
         }
 
         if (DblJump == 1 && JumpTimer < .5f && !IsGrounded)
@@ -317,8 +322,51 @@ public class PlayerCharacterController : MonoBehaviour
 
         //transform.right and transform.forward uses local coords instead of world coords
         Vector3 move = transform.right * x + transform.forward * z;
+        if (Input.GetKey(KeyCode.W)){
+            CharController.Move(move * MoveSpeed * Time.deltaTime);
+            anim.SetBool("Forward", true);
+            anim.SetBool("LSide", false);
+            anim.SetBool("RSide", false);
+            anim.SetBool("Back", false);
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            CharController.Move(move * MoveSpeed * Time.deltaTime);
+            anim.SetBool("LSide", true);
+            anim.SetBool("Forward", false);
+            anim.SetBool("RSide", false);
+            anim.SetBool("Back", false);
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            
+            CharController.Move(move * MoveSpeed * Time.deltaTime);
+            anim.SetBool("RSide", false);
+            anim.SetBool("Forward", false);
+            anim.SetBool("LSide", false);
+            anim.SetBool("Back", true);
 
-        CharController.Move(move * MoveSpeed * Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        { 
+            CharController.Move(move * MoveSpeed * Time.deltaTime);
+            anim.SetBool("RSide", true);
+            anim.SetBool("Forward", false);
+            anim.SetBool("LSide", false);
+            anim.SetBool("Back", false);
+
+        }
+
+        else
+        {
+            anim.SetBool("RSide", false);
+            anim.SetBool("Forward", false);
+            anim.SetBool("LSide", false);
+            anim.SetBool("Back", false);
+        }
+        
+
+
 
         //applies forces on the y axis from jumping or gravity or jetpack
         //-9.81m/s * t * t
