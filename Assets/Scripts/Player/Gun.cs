@@ -9,10 +9,16 @@ public class Gun : MonoBehaviour
     public float ImpactForce = 30f;
 
     public bool IsAutomatic = false;
-
+    public GameObject sparkattack;
     public Camera fpsCamera;
-    //public VisualEffect MuzzleFlash;
-    //public GameObject ImpactEffect;
+    public VisualEffect Bulletfire;
+    public static readonly string Target = "Target";
+    public static readonly string Velocity = "velocity";
+    public static readonly string position = "position";
+    public static readonly string SpawnLocation = "SpawnLocation";
+
+
+
 
     private float NextTimeToFire = 0f;
 
@@ -27,6 +33,10 @@ public class Gun : MonoBehaviour
                 Shoot();
                 Debug.Log("Firing Gun - Full-Auto");
             }
+            else if (!(Input.GetButton("Fire1")))
+            {
+
+            }
         }
         else
         {
@@ -35,21 +45,40 @@ public class Gun : MonoBehaviour
                 Shoot();
                 Debug.Log("Firing Gun - Semi-Auto");
             }
-        }   
+            else if (!(Input.GetButtonDown("Fire1")))
+            {
+            }
+
+
+        }
+
+
     }
 
     void Shoot()
     {
-        //MuzzleFlash.Play();
 
         RaycastHit hit;
-        if (Physics.Raycast(fpsCamera.transform.position, fpsCamera.transform.forward, out hit, Range))
+
+       Vector3 newvelocity;
+
+
+        Debug.Log("Gets here");
+        if (Physics.Raycast(transform.position, fpsCamera.transform.forward, out hit,Mathf.Infinity))
         {
             Debug.Log(hit.transform.name);
+            //temptransform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
+            
+            newvelocity = transform.InverseTransformPoint(hit.point);
+            Debug.Log("This is Target" + hit.point);
+            Debug.DrawLine(transform.position, hit.point, Color.green);
+            Enemy enemy = hit.transform.GetComponent<Enemy>();//This will not work wtf change to tags
+            GameObject temp = Instantiate(sparkattack, hit.point, Quaternion.identity);
+            Destroy(temp, 1.0f);
 
-            Enemy enemy = hit.transform.GetComponent<Enemy>();
 
-            if(enemy != null)
+/*          So make health scripts and actually do this
+            if (enemy != null)
             {
                 enemy.TakeDamage(Damage);
             }
@@ -58,9 +87,7 @@ public class Gun : MonoBehaviour
             {
                 hit.rigidbody.AddForce(-hit.normal * ImpactForce);
             }
-
-            //GameObject impactGO = Instantiate(ImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            //9Destroy(impactGO, 2f);
+            */
         }
     }
 }

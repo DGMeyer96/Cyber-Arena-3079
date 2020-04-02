@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _config:
     framesPerSecond: 60
-    packetSize: 1200
+    packetSize: 1280
     packetMaxEventSize: 512
     maxEntityPriority: 65536
     maxPropertyPriority: 2048
@@ -29,15 +29,15 @@ MonoBehaviour:
     serverDejitterDelay: 6
     serverDejitterDelayMin: 3
     serverDejitterDelayMax: 9
-    serverConnectionLimit: 32
+    serverConnectionLimit: 64
     serverConnectionAcceptMode: 0
     commandQueueSize: 60
     commandRedundancy: 6
     commandPingMultiplier: 1.25
-    useNetworkSimulation: 0
-    simulatedLoss: 0.02
-    simulatedPingMean: 200
-    simulatedPingJitter: 10
+    useNetworkSimulation: 1
+    simulatedLoss: 0
+    simulatedPingMean: 0
+    simulatedPingJitter: 0
     simulatedRandomFunction: 0
     connectionTimeout: 10000
     connectionRequestTimeout: 500
@@ -46,7 +46,7 @@ MonoBehaviour:
     EnableIPv6: 0
   debugClientCount: 2
   debugStartPort: 50538
-  debugStartMapName: PhotonGame
+  debugStartMapName: Bolt_MP_2
   debugPlayAsServer: 0
   showDebugInfo: 1
   overrideTimeScale: 1
@@ -61,9 +61,9 @@ MonoBehaviour:
   masterServerGameId: 09A20926-601A-4EF4-BFEE-374761B0D2A5
   showBoltEntityHints: 0
   serializeProjectAsText: 0
-  photonAppId: 
+  photonAppId: b9e0a4b1-0ff3-485d-a81a-4604e71199d9
   photonUsePunch: 1
-  photonCloudRegionIndex: 0
+  photonCloudRegionIndex: 13
   instantiateMode: 2
   globalEntityBehaviourQueryOption: 3
   globalEntityPriorityCalculatorQueryOption: 3
