@@ -4,7 +4,8 @@ using System.Collections;
 public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 {
     public Camera EntityCamera;
-    private CharacterController CharController;    
+    private CharacterController CharController;
+    public Transform[] spawns;
 
     public AmmoTracker ammoTracker;
 
@@ -52,12 +53,26 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public override void Attached()
     {
         CharController = GetComponent<CharacterController>();
+        /*
         state.SetTransforms(state.PlayerTransform, transform);
+
+        GameObject tmp = GameObject.Find("SpawnPoints");
+        for (int i = 0; i < tmp.transform.childCount; i++)
+        {
+            spawns[i] = tmp.transform.GetChild(i).transform;
+        }
+        SpawnPlayer();
+        */
         jetpackfuel = 10f;
         height = CharController.height;
         radius = CharController.radius;
         IsCrouching = false;
         CanJmp = true;
+    }
+
+    private void Start()
+    {
+        
     }
 
     private void Update()
@@ -98,6 +113,13 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         //Slide();//exectues sliding force
         Movement();//executes movement force
         OnSlope();//executes additional gravity to cause palyer to hug slopes
+    }
+
+    public void SpawnPlayer()
+    {
+        Transform tmp = spawns[Random.Range(0, spawns.Length)];
+        this.transform.position = tmp.position;
+        this.transform.rotation = tmp.rotation;
     }
 
     //public override void SimulateOwner()

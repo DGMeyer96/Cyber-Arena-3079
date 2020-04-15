@@ -772,6 +772,53 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1399874908}
+    - target: {fileID: 2470900944061117668, guid: d126f8fc85d62a7458968e408f3537b3,
+        type: 3}
+      propertyPath: m_Text
+      value: Join Game
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470900944461068444, guid: d126f8fc85d62a7458968e408f3537b3,
+        type: 3}
+      propertyPath: m_Name
+      value: JoinGame_Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470900944461068446, guid: d126f8fc85d62a7458968e408f3537b3,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1945443084}
+    - target: {fileID: 2470900944461068446, guid: d126f8fc85d62a7458968e408f3537b3,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartClient
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470900944602444619, guid: d126f8fc85d62a7458968e408f3537b3,
+        type: 3}
+      propertyPath: m_Text
+      value: 'Cyber Arena
+
+        3079'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470900944967258221, guid: d126f8fc85d62a7458968e408f3537b3,
+        type: 3}
+      propertyPath: m_Name
+      value: HostGame_Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470900944967258223, guid: d126f8fc85d62a7458968e408f3537b3,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1945443084}
+    - target: {fileID: 2470900944967258223, guid: d126f8fc85d62a7458968e408f3537b3,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartServer
+      objectReference: {fileID: 0}
+    - target: {fileID: 2470900945193861950, guid: d126f8fc85d62a7458968e408f3537b3,
+        type: 3}
+      propertyPath: m_Text
+      value: Host Game
+      objectReference: {fileID: 0}
     - target: {fileID: 4472430987787993985, guid: d126f8fc85d62a7458968e408f3537b3,
         type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -894,6 +941,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d126f8fc85d62a7458968e408f3537b3, type: 3}
+--- !u!1 &1945443083 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8757825084572026694, guid: d126f8fc85d62a7458968e408f3537b3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1945443082}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1945443084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945443083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc05b1b7416bfad4c96f02ff37c84d88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2126300512
 GameObject:
   m_ObjectHideFlags: 0
