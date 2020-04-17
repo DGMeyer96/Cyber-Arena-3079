@@ -197,6 +197,7 @@ GameObject:
   - component: {fileID: 3606429504579612075}
   - component: {fileID: 2628918018360251616}
   - component: {fileID: 415134590742144595}
+  - component: {fileID: 523250081493353205}
   m_Layer: 11
   m_Name: Gun
   m_TagString: Untagged
@@ -260,6 +261,25 @@ MonoBehaviour:
   HeavyAmmo: 0
   HeavyMaxAmmo: 0
   ActiveGun: {fileID: 1004373565511601829}
+--- !u!114 &523250081493353205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486028493657643974}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bcdabb85973e3e449316d4f7305a6a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 10
+  Range: 100
+  FireRate: 15
+  IsAutomatic: 1
+  sparkattack: {fileID: 5861953091012419126, guid: d73104ed00fbdb14b960c6f36fcc4aa4,
+    type: 3}
+  spreadfactor: 0.05
 --- !u!1 &642891370303735651
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,6 +601,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2997422773149228159}
+  - component: {fileID: 5395011704675418257}
   m_Layer: 0
   m_Name: Pistolp
   m_TagString: Pistol
@@ -610,6 +631,25 @@ Transform:
   m_Father: {fileID: 3606429504579612075}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5395011704675418257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1004373565511601829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bcdabb85973e3e449316d4f7305a6a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 10
+  Range: 100
+  FireRate: 15
+  IsAutomatic: 0
+  sparkattack: {fileID: 5861953091012419126, guid: d73104ed00fbdb14b960c6f36fcc4aa4,
+    type: 3}
+  spreadfactor: 0.001
 --- !u!1 &1194188515075247716
 GameObject:
   m_ObjectHideFlags: 0
@@ -1865,6 +1905,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6018821999369703608}
+  - component: {fileID: 4785332310783430055}
   m_Layer: 0
   m_Name: Sniper_04p
   m_TagString: Sniper
@@ -1897,6 +1938,25 @@ Transform:
   m_Father: {fileID: 3606429504579612075}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4785332310783430055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5467954847902649212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bcdabb85973e3e449316d4f7305a6a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 10
+  Range: 100
+  FireRate: 15
+  IsAutomatic: 0
+  sparkattack: {fileID: 5861953091012419126, guid: d73104ed00fbdb14b960c6f36fcc4aa4,
+    type: 3}
+  spreadfactor: 0.001
 --- !u!1 &5543430466202660256
 GameObject:
   m_ObjectHideFlags: 0
@@ -2842,6 +2902,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4120985475220882}
+  - component: {fileID: 8331532909351412170}
   m_Layer: 11
   m_Name: Heavyp
   m_TagString: Heavy
@@ -2870,6 +2931,25 @@ Transform:
   m_Father: {fileID: 3606429504579612075}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8331532909351412170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8399882230026676883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bcdabb85973e3e449316d4f7305a6a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 20
+  Range: 100
+  FireRate: 20
+  IsAutomatic: 1
+  sparkattack: {fileID: 5861953091012419126, guid: d73104ed00fbdb14b960c6f36fcc4aa4,
+    type: 3}
+  spreadfactor: 0.001
 --- !u!1 &8408512535764173019
 GameObject:
   m_ObjectHideFlags: 0
@@ -3035,6 +3115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8221738083569606899}
+  - component: {fileID: 1104902195441268624}
   m_Layer: 0
   m_Name: Rifle_06p
   m_TagString: Rifle
@@ -3064,6 +3145,25 @@ Transform:
   m_Father: {fileID: 3606429504579612075}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1104902195441268624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8740948524312376055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bcdabb85973e3e449316d4f7305a6a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 10
+  Range: 100
+  FireRate: 10
+  IsAutomatic: 1
+  sparkattack: {fileID: 5861953091012419126, guid: d73104ed00fbdb14b960c6f36fcc4aa4,
+    type: 3}
+  spreadfactor: 0.001
 --- !u!1 &8827807525055116033
 GameObject:
   m_ObjectHideFlags: 0

@@ -1046,6 +1046,7 @@ GameObject:
   - component: {fileID: 8905399833204378106}
   - component: {fileID: 8905399833204378104}
   - component: {fileID: 8905399833204378107}
+  - component: {fileID: 7649340155226275002}
   m_Layer: 11
   m_Name: Gun
   m_TagString: Untagged
@@ -1060,16 +1061,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8905399833204378109}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.62903124, y: 0.0021305084, z: 9.201119}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8905399832641873228}
   - {fileID: 8905399832996989550}
   - {fileID: 8905399832757145146}
   - {fileID: 8905399833244275967}
-  m_Father: {fileID: 8905399834081414552}
-  m_RootOrder: 1
+  m_Father: {fileID: 8905399833231395062}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8905399833204378104
 MonoBehaviour:
@@ -1109,6 +1110,28 @@ MonoBehaviour:
   HeavyAmmo: 0
   HeavyMaxAmmo: 0
   ActiveGun: {fileID: 8905399832641873231}
+--- !u!114 &7649340155226275002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8905399833204378109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bcdabb85973e3e449316d4f7305a6a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 10
+  Range: 100
+  FireRate: 15
+  ImpactForce: 30
+  IsAutomatic: 0
+  sparkattack: {fileID: 5861953091012419126, guid: d73104ed00fbdb14b960c6f36fcc4aa4,
+    type: 3}
+  fpsCamera: {fileID: 8905399833258759410}
+  Bulletfire: {fileID: 0}
+  spreadfactor: 0.001
 --- !u!1 &8905399833231395049
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,6 +1165,7 @@ Transform:
   - {fileID: 8905399833258759414}
   - {fileID: 8905399832768579373}
   - {fileID: 8905399833295050169}
+  - {fileID: 8905399833204378106}
   m_Father: {fileID: 8905399834081414552}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1463,7 +1487,6 @@ MonoBehaviour:
   MouseSensitivity: 100
   speed: 10
   PlayerBody: {fileID: 8905399833231395062}
-  weapon: {fileID: 8905399833204378106}
 --- !u!1 &8905399833281083419
 GameObject:
   m_ObjectHideFlags: 0
@@ -2584,7 +2607,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8905399833231395062}
-  - {fileID: 8905399833204378106}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
