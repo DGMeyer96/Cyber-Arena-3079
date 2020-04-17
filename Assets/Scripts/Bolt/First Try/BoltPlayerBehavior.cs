@@ -8,8 +8,10 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public Transform[] spawns;
 
     public AmmoTracker ammoTracker;
+    public Player playerscript;
 
-    public float MoveSpeed = 12f;
+    private float MoveSpeed;
+    public float MovespeedControler = 12f;
     public float JumpHeight = 3f;
     public float SlideSpeed = 3000f;//controls slide speed
     private float TempSlideSpeed;
@@ -25,17 +27,18 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     private float CrouchTimer;//sets a timer before the palyer can double jump
     private float height;//height of the character controller
     private float radius;//radius of the character controller 
+    private float poweruptimer;
 
     public Transform GroundCheck;
     public LayerMask GroundMask;
     public LayerMask VualtLayer;
     public LayerMask WallLayer;
+    public LayerMask EverythingButPlayer;
     private Vector3 SlideForce; //Force for sliding;
     private Vector3 slideDIR;
     private Vector3 Velocity;
     private Vector3 Vaultpos;//new pos after vualting
     private Vector3 Climbpos;
-
 
     public bool IsCrouching; //keeps track if the palyer is crouching or not
     public bool CanStand;//wont let palyer stands if something is blocking him
@@ -46,6 +49,8 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public bool IsGrounded;
     public bool Jumping;
     public bool IsOnSlope;
+    public bool cancrouch;
+    public bool powerup;
 
     public bool CanJmp;
     public float JmpCount;
@@ -53,30 +58,16 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public override void Attached()
     {
         CharController = GetComponent<CharacterController>();
-        /*
-        state.SetTransforms(state.PlayerTransform, transform);
-
-        GameObject tmp = GameObject.Find("SpawnPoints");
-        for (int i = 0; i < tmp.transform.childCount; i++)
-        {
-            spawns[i] = tmp.transform.GetChild(i).transform;
-        }
-        SpawnPlayer();
-        */
-        jetpackfuel = 10f;
+        jetpackfuel = 5f;
         height = CharController.height;
         radius = CharController.radius;
         IsCrouching = false;
         CanJmp = true;
     }
 
-    private void Start()
-    {
-        
-    }
-
     private void Update()
     {
+        Debug.Log(playerscript.health + "  -  " + playerscript.armor);
         if (entity.IsOwner && EntityCamera.gameObject.activeInHierarchy == false)
         {
             EntityCamera.gameObject.SetActive(true);
@@ -86,10 +77,15 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             CharController.enabled = true;
         }
         Jump();
+        Crouch();//accepts continuous input for sliding and crouching
         if (!IsCrouching)
         {
             Vualt();
             Climb();//used for ledge detection
+        }
+        if (powerup)
+        {
+            Applypowerup();
         }
     }
 
@@ -109,47 +105,21 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         }
 
         JetPack();//accepst continuous input for jetpack
-        //Crouch();//accepts continuous input for sliding and crouching
-        //Slide();//exectues sliding force
         Movement();//executes movement force
-        OnSlope();//executes additional gravity to cause palyer to hug slopes
+        Slide();//exectues sliding force     //add a slide cooldown
+        if (!sliding)
+        {
+            OnSlope();//executes additional gravity to cause palyer to hug slopes
+        }
     }
 
-    public void SpawnPlayer()
-    {
-        Transform tmp = spawns[Random.Range(0, spawns.Length)];
-        this.transform.position = tmp.position;
-        this.transform.rotation = tmp.rotation;
-    }
-
-    //public override void SimulateOwner()
+    //public void SpawnPlayer()
     //{
-    //    /*
-    //    float x = Input.GetAxis("Horizontal");
-    //    float z = Input.GetAxis("Vertical");
-
-    //    //transform.right and transform.forward uses local coords instead of world coords
-    //    Vector3 move = transform.right * x + transform.forward * z;
-
-    //    CharController.Move(move * 12f * Time.deltaTime);
-    //    */
-    //    //applies forces on the y axis from jumping or gravity or jetpack
-    //    //-9.81m/s * t * t
-    //    //CharController.Move(Velocity * Time.deltaTime);
-
-    //    var speed = 12f;
-    //    var movement = Vector3.zero;
-
-    //    if (Input.GetKey(KeyCode.W)) { movement.z += 1; }
-    //    if (Input.GetKey(KeyCode.S)) { movement.z -= 1; }
-    //    if (Input.GetKey(KeyCode.A)) { movement.x -= 1; }
-    //    if (Input.GetKey(KeyCode.D)) { movement.x += 1; }
-
-    //    if (movement != Vector3.zero)
-    //    {
-    //        transform.position = transform.position + (movement.normalized * speed * BoltNetwork.FrameDeltaTime);
-    //    }
+    //    Transform tmp = spawns[Random.Range(0, spawns.Length)];
+    //    this.transform.position = tmp.position;
+    //    this.transform.rotation = tmp.rotation;
     //}
+
     void Jump()
     {
         if (Input.GetButtonDown("Jump") && CanJmp && JmpCount < 2)
@@ -170,19 +140,19 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         Vector3 pos = transform.position + (Vector3.down * height / 3f);
         if (Physics.SphereCast(pos, radius, transform.forward, out var hit, 2f, VualtLayer) || Physics.SphereCast(pos + (Vector3.up * height / 2), radius, transform.forward, out hit, 2f, VualtLayer))//wall hit
         {
-            Debug.DrawRay(pos, transform.forward * 5, Color.green);
-            Debug.DrawRay(pos + (Vector3.up * height / 2), transform.forward * 5, Color.green);
+            //Debug.DrawRay(pos, transform.forward * 5, Color.green);
+            //Debug.DrawRay(pos + (Vector3.up * height / 2), transform.forward * 5, Color.green);
             Vector3 posdown = hit.point + (Vector3.up * height * 2);
             if (Physics.SphereCast(posdown, .1f, Vector3.down, out var hit2, VualtLayer))//top of the wall found
             {
-                Debug.DrawRay(posdown, Vector3.down * 5, Color.gray);
+                //Debug.DrawRay(posdown, Vector3.down * 5, Color.gray);
                 Vector3 pos2 = transform.position + (Vector3.down * height / 3f) + (transform.forward * 7f);
-                Debug.DrawRay(pos2, transform.forward * -1 * 6.5f, Color.red);
-                Debug.DrawRay(pos2 + (Vector3.up * height / 2), transform.forward * -1 * 6.5f, Color.red);
+                //Debug.DrawRay(pos2, transform.forward * -1 * 6.5f, Color.red);
+                //Debug.DrawRay(pos2 + (Vector3.up * height / 2), transform.forward * -1 * 6.5f, Color.red);
 
                 if (Physics.Raycast(transform.position + (Vector3.up * height / 2), transform.forward, 3f))//check if there is something blocking the palyers view.  otherwise he cant vualt
                 {
-                    Debug.Log("WALL");
+                    //Debug.Log("WALL");
                 }
                 else if (Physics.SphereCast(pos2, radius, transform.forward * -1, out var hit3, 6.5f, VualtLayer) || Physics.SphereCast(pos2 + (Vector3.up * height / 2), radius, transform.forward * -1, out hit3, 6.5f, VualtLayer))//back of the wall found
                 {
@@ -190,7 +160,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
                     float dist = Vector3.Distance(hit2.point, hit3.point);//find the width of the wall
                     if (dist > 3f || dist < .6f)
                     {
-                        Debug.Log("noVualt");
+                        //Debug.Log("noVualt");
                     }
                     else
                     {
@@ -201,17 +171,17 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
                         Debug.DrawRay(Vaultpos, transform.up * 5, Color.blue);//this line represents where the palyer will transport when vualting
                         //Debug.Log("old pos = " + transform.position);
                         //Debug.Log("new pos = " + Vaultpos);
-                        Debug.Log("VROOM");
+                        //Debug.Log("VROOM");
                     }
                 }
                 else
                 {
-                    Debug.Log("Nope");
+                    //Debug.Log("Nope");
                 }
             }
             else
             {
-                Debug.Log("Wall");
+                //Debug.Log("Wall");
             }
         }
     }
@@ -252,17 +222,27 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
                                 //Debug.DrawRay(transform.position + (Vector3.up * (height * 2)), transform.forward * 3, Color.blue);
                                 if (!Physics.SphereCast(transform.position + (Vector3.up * (height * 2)), radius, transform.forward, out var hit4, 3f))//room in front
                                 {
-                                    Debug.Log("WROOM");
+                                    //Debug.Log("WROOM");
                                     Climbpos = hit2.point;
                                     Climbpos.y = Climbpos.y + height / 2;
                                     Climbpos += (transform.forward * radius * 1.3f);
-                                    Debug.DrawRay(Climbpos, transform.up * height / 2, Color.blue);
+                                    //Debug.DrawRay(Climbpos, transform.up * height / 2, Color.blue);
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+    }
+
+    void Applypowerup()//while powerup = true palyer is invincible
+    {
+        poweruptimer += Time.deltaTime;
+        if (poweruptimer < 10) 
+        {
+            powerup = false;
+            poweruptimer = 0;
         }
     }
 
@@ -279,7 +259,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             }
         }
 
-        if (Input.GetAxis("Jump") > 0 && Input.GetAxis("Sprint") > 0 && jetpackfuel > 0)
+        if (Input.GetAxis("JetPack") > 0 && Input.GetAxis("Jump") > 0  && jetpackfuel > 0)
         {
             if (Velocity.y >= 0 && Velocity.y < 10) //if velocity >= 0 apply a constant force until velocity is equal to 10
             {
@@ -301,46 +281,60 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     }
 
     void Crouch()
-    {//choppy returning to max hieght is instant and feels like teleporting
-        if (IsGrounded)
+    {
+        if (IsCrouching)
         {
-            if (Input.GetAxis("Crouch") > 0 && Input.GetAxis("Sprint") > 0 && !IsCrouching && CrouchTimer >= .3f && sliding == false)//player will slide
-            {
-                IsCrouching = true;
-                CharController.height = height / 2;
-                sliding = true;
-                firstslide = true;
-                CrouchTimer = 0;
-            }
-
-            if (Input.GetAxis("Crouch") > 0 && !IsCrouching && CrouchTimer >= .3f)//player will crouch
-            {
-                Debug.Log("Crouch");
-                IsCrouching = true;
-                CharController.height = height / 2;
-                CrouchTimer = 0;
-            }
-
-            else if ((Input.GetAxis("Crouch") > 0 || Input.GetAxis("Jump") > 0) && IsCrouching && CanStand && CrouchTimer >= .2f)//if there is nothing over the character he can stand back up
-            {
-                IsCrouching = false;
-                sliding = false;
-                CharController.height = height;
-                CrouchTimer = 0;
-            }
-
-            if (CrouchTimer < .5f && IsGrounded)
-            {
-                CrouchTimer += Time.deltaTime;
-            }
+            MoveSpeed = MovespeedControler / 2;
         }
-        if (Physics.Raycast(transform.position, transform.up, out var hit, 3))//check to make sure there is nothing over the character
+        if (!IsCrouching)
+        {
+            MoveSpeed = MovespeedControler;
+        }
+
+        if (Physics.Raycast(transform.position, transform.up, out var hit, 3, EverythingButPlayer))//check to make sure there is nothing over the character
         {
             CanStand = false;
         }
         else
         {
             CanStand = true;
+        }
+        if (Physics.Raycast(transform.position, -transform.up, out var hit2, ((height / 2) + 1), EverythingButPlayer))//check to make sure there is something below the player
+        {
+            cancrouch = true;
+        }
+        else
+        {
+            cancrouch = false;
+            IsGrounded = false;
+        }
+        if (Input.GetButtonDown("Slide") && sliding == false && (!IsGrounded || Jumping))//player will slide in air
+        {
+            sliding = true;
+            firstslide = true;
+            CrouchTimer = 0;
+        }
+        if (Input.GetButtonUp("Crouch") && CanStand)//if there is nothing over the character he can stand back up
+        {
+            IsCrouching = false;
+            sliding = false;
+            CharController.height = height;
+            CrouchTimer = 0;
+        }
+        if (Input.GetButtonDown("Slide") && sliding == false && cancrouch && !Jumping && IsGrounded)//player will slide
+        {
+            IsCrouching = true;
+            CharController.height = height / 2;
+            sliding = true;
+            firstslide = true;
+            CrouchTimer = 0;
+        }
+        if (Input.GetButtonDown("Crouch") && !IsCrouching && cancrouch && !Jumping && IsGrounded)//player will crouch
+        {
+            //Debug.Log("Crouch");
+            IsCrouching = true;
+            CharController.height = height / 2;
+            CrouchTimer = 0;
         }
     }
     void Slide()
@@ -358,10 +352,6 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             {
                 TempSlideSpeed = TempSlideSpeed - slidedec;
                 SlideForce = slideDIR * TempSlideSpeed * Time.deltaTime;
-            }
-            if (!IsGrounded)//increase gravity alot so slide can hug the ground
-            {
-                SlideForce.y -= 2000 * Time.deltaTime;
             }
             else if (IsGrounded)
             {
@@ -414,6 +404,11 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             }
         }
 
+        if (!IsGrounded && sliding && IsOnSlope)//increase gravity alot so slide can hug the ground
+        {
+            SlideForce.y -= 2000 * Time.deltaTime;
+        }
+
         if ((z != 0 || x != 0) && IsOnSlope)
         {
             CharController.Move(Vector3.down * height / 2 * SlopeForce * Time.deltaTime);
@@ -422,30 +417,37 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Rifle")
+        Debug.Log("Hit");
+        if (other.gameObject.tag == "Ammo")
         {
-            if (ammoTracker.RifleAmmo < ammoTracker.RifleMaxAmmo)
+            if (ammoTracker.RifleAmmo < ammoTracker.RifleMaxAmmo || ammoTracker.HeavyAmmo < ammoTracker.HeavyMaxAmmo || ammoTracker.SniperAmmo < ammoTracker.SniperMaxAmmo)
             {
                 other.gameObject.SetActive(false);
                 ammoTracker.RifleAmmo += 50;
-            }
-        }
-        if (other.gameObject.tag == "Sniper")
-        {
-            if (ammoTracker.SniperAmmo < ammoTracker.SniperMaxAmmo)
-            {
-                other.gameObject.SetActive(false);
+                ammoTracker.HeavyAmmo += 5;
                 ammoTracker.SniperAmmo += 10;
             }
-        }
-        if (other.gameObject.tag == "Heavy")
+        }       
+        if (other.gameObject.tag == "Shield")
         {
-            if (ammoTracker.HeavyAmmo < ammoTracker.HeavyMaxAmmo)
+            if (playerscript.armor < playerscript.maxarmor)
             {
                 other.gameObject.SetActive(false);
-                ammoTracker.HeavyAmmo += 5;
+                playerscript.armor += 2;
             }
-
+        }        
+        if (other.gameObject.tag == "Health")
+        {
+            if (playerscript.health < playerscript.maxhealth)
+            {
+                other.gameObject.SetActive(false);
+                playerscript.health += 5;
+            }
+        }        
+        if (other.gameObject.tag == "Invulnerability")
+        {
+            other.gameObject.SetActive(false);
+            powerup = true;
         }
     }
 }

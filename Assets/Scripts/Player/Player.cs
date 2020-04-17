@@ -6,6 +6,9 @@ using System;
 public class Player : MonoBehaviour
 {
     public float health;
+    public float armor;
+    public float maxhealth = 10;
+    public float maxarmor = 6;
     public Vector3 playerPosition;
     public Quaternion playerRotation;
     public string saveName;
@@ -14,9 +17,15 @@ public class Player : MonoBehaviour
     public byte[] texData;
     public PlayerUI PlayerUI;
 
+    public void Start()
+    {
+        health = 10;
+        armor = 0;
+    }
     public void NewGame()
     {
         health = 10;
+        armor = 0;
         playTime = 0.0f;
 
         Debug.Log("[PLAYER] Creating new game: " + saveName);
@@ -56,8 +65,20 @@ public class Player : MonoBehaviour
 
     public void DamagePlayer(int damage)
     {
-        health -= damage;
-        //Debug.Log("Damage: " + health);
-        PlayerUI.UpdateSlider(health);
+        if (armor == 0)
+        {
+            health -= damage;
+            //Debug.Log("Damage: " + health);
+            //PlayerUI.UpdateSlider(health);
+        }
+        else if (armor != 0)
+        {
+            armor -= damage;
+            if (armor < 0)
+            {
+                armor = 0;
+            }
+            //PlayerUI.UpdateSlider(armor);
+        }
     }
 }
