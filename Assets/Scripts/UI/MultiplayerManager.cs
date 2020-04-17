@@ -7,8 +7,11 @@ using Bolt.Matchmaking;
 
 public class MultiplayerManager : Bolt.GlobalEventListener
 {
-    public void StartServer()
+    private string LevelToLoad;
+    public void StartServer(string hostLevel)
     {
+        LevelToLoad = hostLevel;
+        PlayerPrefs.SetString("LevelToLoad", LevelToLoad);
         BoltLauncher.StartServer();
     }    
     public void StartClient()
@@ -24,7 +27,7 @@ public class MultiplayerManager : Bolt.GlobalEventListener
             //BoltNetwork.SetServerInfo(matchName, null);
             BoltMatchmaking.CreateSession(matchName);
 
-            BoltNetwork.LoadScene("MP_Level_1");
+            BoltNetwork.LoadScene(LevelToLoad);
         }
     }
 
