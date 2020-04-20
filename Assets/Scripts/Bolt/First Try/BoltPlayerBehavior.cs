@@ -4,7 +4,8 @@ using System.Collections;
 public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 {
     public Camera EntityCamera;
-    private CharacterController CharController;
+    public GameObject test;
+    public CharacterController CharController;
     public Transform[] spawns;
 
     public AmmoTracker ammoTracker;
@@ -61,6 +62,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public override void Attached()
     {
         CharController = GetComponent<CharacterController>();
+        state.SetTransforms(state.PlayerTransform, transform);
         jetpackfuel = 5f;
         height = CharController.height;
         radius = CharController.radius;
@@ -71,10 +73,14 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     private void Update()
     {
         Debug.Log(playerscript.health + "  -  " + playerscript.shield);
-        if (entity.IsOwner && EntityCamera.gameObject.activeInHierarchy == false)
+        //if (entity.IsOwner && EntityCamera.gameObject.activeInHierarchy == false)
+        //{
+        //    EntityCamera.gameObject.SetActive(true);
+        //} 
+        if (entity.IsOwner && test.gameObject.activeInHierarchy == false)
         {
-            EntityCamera.gameObject.SetActive(true);
-        }        
+            test.gameObject.SetActive(true);
+        }
         if (entity.IsOwner && CharController.enabled == false)
         {
             CharController.enabled = true;
