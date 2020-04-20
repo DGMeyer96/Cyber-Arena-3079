@@ -6,26 +6,32 @@ using System;
 public class Player : MonoBehaviour
 {
     public float health;
-    public float armor;
+    public float shield;
     public float maxhealth = 10;
-    public float maxarmor = 6;
+    public float maxshield = 6;
     public Vector3 playerPosition;
     public Quaternion playerRotation;
     public string saveName;
     public float playTime = 0.0f;
     public string playDate;
     public byte[] texData;
-    public PlayerUI PlayerUI;
+    //public PlayerUI PlayerUI;
+
+    public PlayerUIController playerUIController;
 
     public void Start()
     {
-        health = 10;
-        armor = 0;
+        health = 100;
+        shield = 0;
+        playerUIController.setmaxhealth(maxhealth);
+        playerUIController.setmaxShield(maxshield);
     }
     public void NewGame()
     {
-        health = 10;
-        armor = 0;
+        health = 100;
+        shield = 0;
+        playerUIController.setmaxhealth(maxhealth);
+        playerUIController.setmaxShield(maxshield);
         playTime = 0.0f;
 
         Debug.Log("[PLAYER] Creating new game: " + saveName);
@@ -63,22 +69,39 @@ public class Player : MonoBehaviour
         playerRotation.z = data.playerRotation[2];
     }
 
-    public void DamagePlayer(int damage)
+    public void DamagePlayer(float damage)
     {
-        if (armor == 0)
+        if (shield == 0)
         {
             health -= damage;
-            //Debug.Log("Damage: " + health);
-            //PlayerUI.UpdateSlider(health);
+            playerUIController.SetHealth(health);
         }
-        else if (armor != 0)
+        else if (shield != 0)
         {
-            armor -= damage;
-            if (armor < 0)
+            if (damage > shield)
             {
-                armor = 0;
+                damage -= shield;
+                shield = 0;
+                playerUIController.SetShield(shield);
+                DamagePlayer(damage);
             }
-            //PlayerUI.UpdateSlider(armor);
+            else 
+            {
+                shield -= damage;
+                playerUIController.SetShield(shield);
+            }
         }
+    }
+
+    public void HealPlayer(int addhealth)
+    {
+        health += addhealth;
+        playerUIController.SetHealth(health);
+    }
+
+    public void shieldPlayer(int addshield)
+    {
+        shield += addshield;
+        playerUIController.SetShield(shield);
     }
 }

@@ -17,6 +17,9 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     private float TempSlideSpeed;
     public float slidedec = 10f;
     public float jetpackfuel; //current fuel in the jetpack
+    public float jetpackfuelmax = 5; 
+    public float jetpackmaxVel = 16; 
+    public float jetpackAcc = 8; 
     public float DblJump;//tracks how many jumps the palyer has done
     private float JumpTimer;//sets a timer before the palyer can double jump
     private float fallmult = 2.5f; //increase gravity pull for better feel
@@ -67,7 +70,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 
     private void Update()
     {
-        Debug.Log(playerscript.health + "  -  " + playerscript.armor);
+        Debug.Log(playerscript.health + "  -  " + playerscript.shield);
         if (entity.IsOwner && EntityCamera.gameObject.activeInHierarchy == false)
         {
             EntityCamera.gameObject.SetActive(true);
@@ -78,15 +81,11 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         }
         Jump();
         Crouch();//accepts continuous input for sliding and crouching
-        if (!IsCrouching)
-        {
-            Vualt();
-            Climb();//used for ledge detection
-        }
-        if (powerup)
-        {
-            Applypowerup();
-        }
+        //if (!IsCrouching)
+        //{
+        //    Vualt();
+        //    Climb();//used for ledge detection
+        //}
     }
 
     void FixedUpdate()
@@ -135,6 +134,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         }
     }
 
+    /*
     void Vualt()
     {
         Vector3 pos = transform.position + (Vector3.down * height / 3f);
@@ -235,16 +235,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             }
         }
     }
-
-    void Applypowerup()//while powerup = true palyer is invincible
-    {
-        poweruptimer += Time.deltaTime;
-        if (poweruptimer < 10) 
-        {
-            powerup = false;
-            poweruptimer = 0;
-        }
-    }
+    */
 
     void JetPack()
     {
@@ -253,7 +244,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         {
             //Not 0 so we can force the player onto the ground
             Velocity.y = -0.5f;
-            if (jetpackfuel < 10f) //recharge jetpack
+            if (jetpackfuel < jetpackfuelmax) //recharge jetpack
             {
                 jetpackfuel += Time.deltaTime;
             }
@@ -261,9 +252,9 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 
         if (Input.GetAxis("JetPack") > 0 && Input.GetAxis("Jump") > 0  && jetpackfuel > 0)
         {
-            if (Velocity.y >= 0 && Velocity.y < 10) //if velocity >= 0 apply a constant force until velocity is equal to 10
+            if (Velocity.y >= 0 && Velocity.y < jetpackmaxVel) //if velocity >= 0 apply a constant force until velocity is equal to 10
             {
-                Velocity.y += 3f * Time.deltaTime;
+                Velocity.y += jetpackAcc * Time.deltaTime;
             }
             else if (Velocity.y <= 0) //if velocity is < 0 apply a force that will cancel out gravity.  this creates a drag effect
             {
@@ -314,7 +305,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             firstslide = true;
             CrouchTimer = 0;
         }
-        if (Input.GetButtonUp("Crouch") && CanStand)//if there is nothing over the character he can stand back up
+        if ((Input.GetButtonUp("Crouch") || Input.GetButtonUp("Slide")) && CanStand)//if there is nothing over the character he can stand back up
         {
             IsCrouching = false;
             sliding = false;
@@ -430,10 +421,10 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         }       
         if (other.gameObject.tag == "Shield")
         {
-            if (playerscript.armor < playerscript.maxarmor)
+            if (playerscript.shield < playerscript.maxshield)
             {
                 other.gameObject.SetActive(false);
-                playerscript.armor += 2;
+                playerscript.shieldPlayer(10);
             }
         }        
         if (other.gameObject.tag == "Health")
@@ -441,7 +432,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             if (playerscript.health < playerscript.maxhealth)
             {
                 other.gameObject.SetActive(false);
-                playerscript.health += 5;
+                playerscript.HealPlayer(20);
             }
         }        
         if (other.gameObject.tag == "Invulnerability")
