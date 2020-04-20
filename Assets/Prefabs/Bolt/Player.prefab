@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 3606429504579612075}
   - component: {fileID: 2628918018360251616}
   - component: {fileID: 415134590742144595}
-  - component: {fileID: 7553058608700362280}
+  - component: {fileID: 6322489108967045832}
   m_Layer: 19
   m_Name: Gun
   m_TagString: Untagged
@@ -213,15 +213,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486028493657643974}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2997422773149228159}
   - {fileID: 8221738083569606899}
   - {fileID: 6018821999369703608}
   - {fileID: 4120985475220882}
-  m_Father: {fileID: 1194188515075247712}
-  m_RootOrder: 0
+  m_Father: {fileID: 1194188515237259540}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2628918018360251616
 MonoBehaviour:
@@ -261,7 +261,7 @@ MonoBehaviour:
   HeavyAmmo: 0
   HeavyMaxAmmo: 0
   ActiveGun: {fileID: 1004373565511601829}
---- !u!114 &7553058608700362280
+--- !u!114 &6322489108967045832
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -270,26 +270,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 486028493657643974}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -36112512, guid: 5b00bf8b25851d440940a40ec23344f4, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ab323b8fdc13294280880d9ccbcde26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneGuid: 
-  _serializerGuid: b3baa877-94e6-4195-a7f2-e6acbc08dfbf
-  _prefabId: -1
-  _updateRate: 1
-  _autoFreezeProxyFrames: 0
-  _clientPredicted: 1
-  _allowInstantiateOnClient: 1
-  _persistThroughSceneLoads: 0
-  _sceneObjectDestroyOnDetach: 1
-  _sceneObjectAutoAttach: 1
-  _alwaysProxy: 0
-  _detachOnDisable: 1
-  _allowFirstReplicationWhenFrozen: 0
-  _autoRemoveChildEntities: 0
-  _entityBehaviourQueryOption: 0
-  _entityPriorityCalculatorQueryOption: 0
-  _entityReplicationFilterQueryOption: 0
+  gunHolder: {fileID: 8718317323439416588}
 --- !u!1 &642891370303735651
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,7 +656,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 3606429504579612075}
+  - {fileID: 5878725238748865978}
   m_Father: {fileID: 7124113568753434826}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -962,6 +946,7 @@ Transform:
   m_Children:
   - {fileID: 1194188515128536533}
   - {fileID: 6229529720501427827}
+  - {fileID: 3606429504579612075}
   - {fileID: 7124113568753434826}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1526,7 +1511,7 @@ Transform:
   - {fileID: 6377902292072885859}
   - {fileID: 1194188515075247712}
   m_Father: {fileID: 1194188515237259540}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3344813118191057648
 GameObject:
@@ -3118,6 +3103,36 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &8718317323439416588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5878725238748865978}
+  m_Layer: 13
+  m_Name: GunHodler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5878725238748865978
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8718317323439416588}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1194188515075247712}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8740948524312376055
 GameObject:
   m_ObjectHideFlags: 0
