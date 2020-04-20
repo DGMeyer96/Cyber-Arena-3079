@@ -197,6 +197,7 @@ GameObject:
   - component: {fileID: 3606429504579612075}
   - component: {fileID: 2628918018360251616}
   - component: {fileID: 415134590742144595}
+  - component: {fileID: 7553058608700362280}
   m_Layer: 19
   m_Name: Gun
   m_TagString: Untagged
@@ -260,6 +261,35 @@ MonoBehaviour:
   HeavyAmmo: 0
   HeavyMaxAmmo: 0
   ActiveGun: {fileID: 1004373565511601829}
+--- !u!114 &7553058608700362280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486028493657643974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -36112512, guid: 5b00bf8b25851d440940a40ec23344f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sceneGuid: 
+  _serializerGuid: b3baa877-94e6-4195-a7f2-e6acbc08dfbf
+  _prefabId: -1
+  _updateRate: 1
+  _autoFreezeProxyFrames: 0
+  _clientPredicted: 1
+  _allowInstantiateOnClient: 1
+  _persistThroughSceneLoads: 0
+  _sceneObjectDestroyOnDetach: 1
+  _sceneObjectAutoAttach: 1
+  _alwaysProxy: 0
+  _detachOnDisable: 1
+  _allowFirstReplicationWhenFrozen: 0
+  _autoRemoveChildEntities: 0
+  _entityBehaviourQueryOption: 0
+  _entityPriorityCalculatorQueryOption: 0
+  _entityReplicationFilterQueryOption: 0
 --- !u!1 &642891370303735651
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,6 +1050,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EntityCamera: {fileID: 1194188515075247719}
   test: {fileID: 3310171813571565253}
+  CharController: {fileID: 0}
   spawns: []
   ammoTracker: {fileID: 415134590742144595}
   playerscript: {fileID: 1194188515237259546}

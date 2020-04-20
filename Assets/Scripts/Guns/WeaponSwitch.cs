@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponSwitch : MonoBehaviour
+public class WeaponSwitch : Bolt.EntityBehaviour<IBensState>
 {
     public AmmoTracker AmmoTracker;
     public bool useable;
@@ -15,7 +15,10 @@ public class WeaponSwitch : MonoBehaviour
         SelectWeapon();
     }
 
-    // Update is called once per frame
+    public override void Attached()
+    {
+        state.SetTransforms(state.PlayerTransform, transform);
+    }
 
     void Update()
     {
