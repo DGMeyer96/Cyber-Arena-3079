@@ -7,8 +7,8 @@ public class Player : MonoBehaviour
 {
     public float health;
     public float shield;
-    public float maxhealth = 10;
-    public float maxshield = 6;
+    public float maxhealth = 100;
+    public float maxshield = 50;
     public Vector3 playerPosition;
     public Quaternion playerRotation;
     public string saveName;

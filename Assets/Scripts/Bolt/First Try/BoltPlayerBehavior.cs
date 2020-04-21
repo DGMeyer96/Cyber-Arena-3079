@@ -10,6 +10,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 
     public AmmoTracker ammoTracker;
     public Player playerscript;
+    public PickupReset pickupReset;
 
     private float MoveSpeed;
     public float MovespeedControler = 12f;
@@ -72,7 +73,8 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 
     private void Update()
     {
-        Debug.Log(playerscript.health + "  -  " + playerscript.shield);
+        //Debug.Log(playerscript.health + "  -  " + playerscript.shield);
+        //Debug.Log(playerscript.maxhealth + "  -  " + playerscript.maxshield);
         //if (entity.IsOwner && EntityCamera.gameObject.activeInHierarchy == false)
         //{
         //    EntityCamera.gameObject.SetActive(true);
@@ -419,7 +421,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         {
             if (ammoTracker.RifleAmmo < ammoTracker.RifleMaxAmmo || ammoTracker.HeavyAmmo < ammoTracker.HeavyMaxAmmo || ammoTracker.SniperAmmo < ammoTracker.SniperMaxAmmo)
             {
-                other.gameObject.SetActive(false);
+                other.GetComponent<PickupReset>().holder.SetActive(false);
                 ammoTracker.RifleAmmo += 50;
                 ammoTracker.HeavyAmmo += 5;
                 ammoTracker.SniperAmmo += 10;
@@ -429,7 +431,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         {
             if (playerscript.shield < playerscript.maxshield)
             {
-                other.gameObject.SetActive(false);
+                other.GetComponent<PickupReset>().holder.SetActive(false);
                 playerscript.shieldPlayer(10);
             }
         }        
@@ -437,13 +439,13 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         {
             if (playerscript.health < playerscript.maxhealth)
             {
-                other.gameObject.SetActive(false);
+                other.GetComponent<PickupReset>().holder.SetActive(false);
                 playerscript.HealPlayer(20);
             }
         }        
         if (other.gameObject.tag == "Invulnerability")
         {
-            other.gameObject.SetActive(false);
+            other.GetComponent<PickupReset>().holder.SetActive(false);
             powerup = true;
         }
     }
