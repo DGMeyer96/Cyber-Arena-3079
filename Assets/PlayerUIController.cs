@@ -20,11 +20,13 @@ public class PlayerUIController : MonoBehaviour
     }    
     public void setmaxShield(float Shield)//start with 0 shield
     {
-        healthSlider.maxValue = Shield;
+        ShieldSlider.maxValue = Shield;
+        ShieldSlider.value = 0;
     }
 
     public void SetShield(float Shield) 
     {
-        healthSlider.value = Shield;
+        ShieldSlider.value = Shield;
+        //ShieldSlider.value = Mathf.Lerp(Shield, ShieldSlider.value, 1* Time.deltaTime);
     }
 }
