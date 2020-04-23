@@ -90,8 +90,8 @@ public class PlayerCharacterController : MonoBehaviour
         }
 
         JetPack();//accepst continuous input for jetpack
-        //Crouch();//accepts continuous input for sliding and crouching
-        //Slide();//exectues sliding force
+        Crouch();//accepts continuous input for sliding and crouching
+        Slide();//exectues sliding force
         Movement();//executes movement force
         OnSlope();//executes additional gravity to cause palyer to hug slopes
     }
