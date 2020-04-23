@@ -8,7 +8,6 @@ public class NetworkCallbacks_New : Bolt.GlobalEventListener
 {
     public Vector3[] spawnPositions = new Vector3[8];
     public Quaternion[] spawnRotations = new Quaternion[8];
-
     public override void SceneLoadLocalDone(string scene)
     {
         /*

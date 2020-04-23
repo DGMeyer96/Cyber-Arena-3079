@@ -115,12 +115,12 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         OnSlope();//executes additional gravity to cause palyer to hug slopes
     }
 
-    public void SpawnPlayer()
-    {
-        Transform tmp = spawns[Random.Range(0, spawns.Length)];
-        this.transform.position = tmp.position;
-        this.transform.rotation = tmp.rotation;
-    }
+    //public void SpawnPlayer()
+    //{
+    //    Transform tmp = spawns[Random.Range(0, spawns.Length)];
+    //    this.transform.position = tmp.position;
+    //    this.transform.rotation = tmp.rotation;
+    //}
 
     //public override void SimulateOwner()
     //{
