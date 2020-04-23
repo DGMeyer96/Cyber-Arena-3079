@@ -11,6 +11,12 @@ public class WeaponSwitch : Bolt.EntityEventListener<IBensState>
     public int CurrentAmmo;
     public int SelectedWeapon = 0;
     public int NumOfWeapons;
+
+
+    private Renderer _renderer;
+    private float _resetColorTime;
+
+
     void Start()
     {
         SelectWeapon();
@@ -20,6 +26,8 @@ public class WeaponSwitch : Bolt.EntityEventListener<IBensState>
 
     public override void Attached()
     {
+        _renderer = GetComponent<Renderer>();
+
         if (entity.IsOwner)
         {
             for (int i = 0; i < state.WeaponArray.Length; ++i)
@@ -28,10 +36,11 @@ public class WeaponSwitch : Bolt.EntityEventListener<IBensState>
             }
             state.WeaponActiveIndex = 0;
         }
+        state.SetTransforms(state.WeaponTransform, transform);
         state.AddCallback("WeaponActiveIndex", WeaponActiveIndexChanged);
     }
 
-    void Update()
+    public override void SimulateOwner()
     {
         NumOfWeapons = transform.childCount;
 
