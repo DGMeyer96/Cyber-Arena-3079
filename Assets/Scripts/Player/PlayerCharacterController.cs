@@ -7,7 +7,7 @@ public class PlayerCharacterController : MonoBehaviour
     public CharacterController CharController;
 
     public AmmoTracker ammoTracker;
-
+    Animator anim;
     public float MoveSpeed = 12f;
     public float JumpHeight = 3f;
     public float SlideSpeed = 3000f;//controls slide speed
@@ -57,12 +57,15 @@ public class PlayerCharacterController : MonoBehaviour
         radius = CharController.radius;
         IsCrouching = false;
         CanJmp = true;
+        anim = GetComponent<Animator>();
     }
 
     //fixed update and update contain separate functions for each movement
     //functions are odered in what step they should be executed
     void Update()//things that need to happen only once per frame
     {
+        //shoot is for shooting animation
+        Shoot();
         Jump();
         if (!IsCrouching)
         {
@@ -95,14 +98,31 @@ public class PlayerCharacterController : MonoBehaviour
 
     void Jump()
     {
+        
         if (Input.GetButtonDown("Jump") && CanJmp && JmpCount < 2)
         {
-            Velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
-            Jumping = true;
-            CanJmp = false;
+            if (JmpCount == 0)
+            {
+                print("First Jump");
+                anim.SetBool("Jumping", true);
+                Velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                Jumping = true;
+                CanJmp = false;
+            }
+            else if (JmpCount == 1)
+            {
+                print("Second Jump");
+                anim.SetBool("Double Jumping", true);
+                Velocity.y = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                Jumping = true;
+                CanJmp = false;
+            }         
         }
+       
         if (Input.GetButtonUp("Jump") && !CanJmp && JmpCount < 2)
         {
+            anim.SetBool("Jumping", false);
+            anim.SetBool("Double Jumping", false);
             CanJmp = true;
             JmpCount++;
         }
@@ -323,12 +343,59 @@ public class PlayerCharacterController : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+        if (Input.GetKey(KeyCode.W))
+        {
+            anim.SetBool("Forward", true);
+            anim.SetBool("Backward", false);
+            anim.SetBool("Left", false);
+            anim.SetBool("Right", false);
+            //transform.right and transform.forward uses local coords instead of world coords
+            Vector3 move = transform.right * x + transform.forward * z;
 
-        //transform.right and transform.forward uses local coords instead of world coords
-        Vector3 move = transform.right * x + transform.forward * z;
+            CharController.Move(move * MoveSpeed * Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            anim.SetBool("Forward", false);
+            anim.SetBool("Backward", false);
+            anim.SetBool("Left", true);
+            anim.SetBool("Right", false);
 
-        CharController.Move(move * MoveSpeed * Time.deltaTime);
+            //transform.right and transform.forward uses local coords instead of world coords
+            Vector3 move = transform.right * x + transform.forward * z;
 
+            CharController.Move(move * MoveSpeed * Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            anim.SetBool("Forward", false);
+            anim.SetBool("Backward", true);
+            anim.SetBool("Left", false);
+            anim.SetBool("Right", false);
+            //transform.right and transform.forward uses local coords instead of world coords
+            Vector3 move = transform.right * x + transform.forward * z;
+
+            CharController.Move(move * MoveSpeed * Time.deltaTime);
+
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            anim.SetBool("Forward", false);
+            anim.SetBool("Backward", false);
+            anim.SetBool("Left", false);
+            anim.SetBool("Right", true);
+            //transform.right and transform.forward uses local coords instead of world coords
+            Vector3 move = transform.right * x + transform.forward * z;
+
+            CharController.Move(move * MoveSpeed * Time.deltaTime);
+        }
+        else
+        {
+            anim.SetBool("Forward", false);
+            anim.SetBool("Backward", false);
+            anim.SetBool("Left", false);
+            anim.SetBool("Right", false);
+        }
         //applies forces on the y axis from jumping or gravity or jetpack
         //-9.81m/s * t * t
         CharController.Move(Velocity * Time.deltaTime);
@@ -360,6 +427,18 @@ public class PlayerCharacterController : MonoBehaviour
         if ((z != 0 || x != 0) && IsOnSlope)
         {
             CharController.Move(Vector3.down * height / 2 * SlopeForce * Time.deltaTime);
+        }
+    }
+
+    void Shoot()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            anim.SetBool("Fire", true);
+        }
+        else
+        {
+            anim.SetBool("Fire", false);
         }
     }
 
