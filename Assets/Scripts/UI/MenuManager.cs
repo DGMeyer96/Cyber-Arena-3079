@@ -9,8 +9,7 @@ public class MenuManager : MonoBehaviour
     public GameObject mainMenu;
     public GameObject optionsMenu;
     public GameObject controlsMenu;
-    public GameObject newGameMenu;
-    public GameObject loadGameMenu;
+    public GameObject hostGameMenu;
 
     public Texture2D dataErrorTex;
     public Texture2D dataFoundTex;
@@ -28,6 +27,12 @@ public class MenuManager : MonoBehaviour
     {
         mainMenu.gameObject.SetActive(true);
         prevMenu.gameObject.SetActive(false);
+    }
+
+    public void HostGame()
+    {
+        hostGameMenu.gameObject.SetActive(true);
+        mainMenu.gameObject.SetActive(false);
     }
 
     public void OptionsMenu()
