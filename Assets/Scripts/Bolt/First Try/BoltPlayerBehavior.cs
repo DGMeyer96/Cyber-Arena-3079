@@ -23,16 +23,16 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public float jetpackmaxVel = 16; 
     public float jetpackAcc = 8; 
     public float DblJump;//tracks how many jumps the palyer has done
-    private float JumpTimer;//sets a timer before the palyer can double jump
+    //private float JumpTimer;//sets a timer before the palyer can double jump
     private float fallmult = 2.5f; //increase gravity pull for better feel
     public float Gravity = -9.81f;
     public float GroundDistance = 0.4f;
     public float SlopeRayLength = 1f;
     public float SlopeForce = 1f;
-    private float CrouchTimer;//sets a timer before the palyer can double jump
+    //private float CrouchTimer;//sets a timer before the palyer can double jump
     private float height;//height of the character controller
-    private float radius;//radius of the character controller 
-    private float poweruptimer;
+    //private float radius;//radius of the character controller 
+    //private float poweruptimer;
 
     public Transform GroundCheck;
     public LayerMask GroundMask;
@@ -66,7 +66,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         state.SetTransforms(state.PlayerTransform, transform);
         jetpackfuel = 5f;
         height = CharController.height;
-        radius = CharController.radius;
+        //radius = CharController.radius;
         IsCrouching = false;
         CanJmp = true;
     }
@@ -311,14 +311,14 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         {
             sliding = true;
             firstslide = true;
-            CrouchTimer = 0;
+            //CrouchTimer = 0;
         }
         if ((Input.GetButtonUp("Crouch") || Input.GetButtonUp("Slide")) && CanStand)//if there is nothing over the character he can stand back up
         {
             IsCrouching = false;
             sliding = false;
             CharController.height = height;
-            CrouchTimer = 0;
+            //CrouchTimer = 0;
         }
         if (Input.GetButtonDown("Slide") && sliding == false && cancrouch && !Jumping && IsGrounded)//player will slide
         {
@@ -326,14 +326,14 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             CharController.height = height / 2;
             sliding = true;
             firstslide = true;
-            CrouchTimer = 0;
+            //CrouchTimer = 0;
         }
         if (Input.GetButtonDown("Crouch") && !IsCrouching && cancrouch && !Jumping && IsGrounded)//player will crouch
         {
             //Debug.Log("Crouch");
             IsCrouching = true;
             CharController.height = height / 2;
-            CrouchTimer = 0;
+            //CrouchTimer = 0;
         }
     }
     void Slide()
