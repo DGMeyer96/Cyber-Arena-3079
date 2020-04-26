@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 {
@@ -60,6 +61,8 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public bool CanJmp;
     public float JmpCount;
 
+    public bool SpawnSet = false;
+
     public override void Attached()
     {
         CharController = GetComponent<CharacterController>();
@@ -73,6 +76,29 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 
     private void Update()
     {
+        if(!SpawnSet)
+        {
+            //Debug.LogError("Searching for SpawnPoints");
+            GameObject SpawnObject = GameObject.FindWithTag("Spawn");
+            if(SpawnObject != null)
+            {
+                //int i = 0;
+                Transform[] SpawnPoints = new Transform[SpawnObject.transform.childCount];
+
+                for(int i = 0; i < SpawnObject.transform.childCount; i++)
+                {
+                    Debug.LogError("Spawn point: " + SpawnObject.transform.GetChild(i).transform);
+                    SpawnPoints[i] = SpawnObject.transform.GetChild(i).transform;
+                }
+
+                int spawn = Random.Range(0, 7);
+                this.transform.position = SpawnPoints[spawn].position;
+                this.transform.rotation = SpawnPoints[spawn].rotation;
+
+                SpawnSet = true;
+            }
+        }
+
         //Debug.Log(playerscript.health + "  -  " + playerscript.shield);
         //Debug.Log(playerscript.maxhealth + "  -  " + playerscript.maxshield);
         //if (entity.IsOwner && EntityCamera.gameObject.activeInHierarchy == false)

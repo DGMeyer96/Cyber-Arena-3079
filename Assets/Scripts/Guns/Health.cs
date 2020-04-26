@@ -26,6 +26,7 @@ public class Health : MonoBehaviour
     //TODO I need to have it respawn rather than delete self
     void Death()
     {
+        /*
         // gameObject.SetActive(false);
         //Destroy(gameObject);
         Debug.Log("I SWEAR TO GOD THIS BETTER COME BACK RIGHT" + temptest.GetComponent<MP_Level_1_Spawn_Data>().spawnPositions[randomSpawn]);
@@ -40,6 +41,6 @@ public class Health : MonoBehaviour
         Debug.Log("Should be correct" + gameObject.transform.position);
         gameObject.transform.rotation = spawnrotation;
         HealthAmount = 50f;
-
+        */
     }
 }
