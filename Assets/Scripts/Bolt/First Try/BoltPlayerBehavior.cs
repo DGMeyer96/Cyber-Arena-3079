@@ -62,6 +62,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public float JmpCount;
 
     public bool SpawnSet = false;
+    public bool gamePaused = false;
 
     public override void Attached()
     {
@@ -109,10 +110,22 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         {
             test.gameObject.SetActive(true);
         }
-        if (entity.IsOwner && CharController.enabled == false)
+        if (entity.IsOwner && CharController.enabled == false && gamePaused == false)
         {
             CharController.enabled = true;
         }
+
+        if(gamePaused == true)
+        {
+            CharController.enabled = false;
+            EntityCamera.GetComponent<MouseLook>().enabled = false;
+        }
+        if(gamePaused == false)
+        {
+            CharController.enabled = true;
+            EntityCamera.GetComponent<MouseLook>().enabled = true;
+        }
+
         Jump();
         Crouch();//accepts continuous input for sliding and crouching
         //if (!IsCrouching)
