@@ -26,8 +26,6 @@ public class WeaponSwitch : Bolt.EntityEventListener<IBensState>
 
     public override void Attached()
     {
-        _renderer = GetComponent<Renderer>();
-
         if (entity.IsOwner)
         {
             for (int i = 0; i < state.WeaponArray.Length; ++i)
@@ -38,6 +36,11 @@ public class WeaponSwitch : Bolt.EntityEventListener<IBensState>
         }
         state.SetTransforms(state.WeaponTransform, transform);
         state.AddCallback("WeaponActiveIndex", WeaponActiveIndexChanged);
+    }
+
+    public void FixedUpdate()
+    {
+        state.SetTransforms(state.WeaponTransform, transform);
     }
 
     public override void SimulateOwner()

@@ -31,10 +31,13 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public float SlopeForce = 1f;
     //private float CrouchTimer;//sets a timer before the palyer can double jump
     private float height;//height of the character controller
+    public float slideTimer;
     //private float radius;//radius of the character controller 
     //private float poweruptimer;
 
     public Transform GroundCheck;
+    public Vector3 lastpos;
+
     public LayerMask GroundMask;
     public LayerMask VualtLayer;
     public LayerMask WallLayer;
@@ -56,6 +59,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public bool IsOnSlope;
     public bool cancrouch;
     public bool powerup;
+    public bool canSlide;
 
     public bool CanJmp;
     public float JmpCount;
@@ -73,8 +77,6 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 
     private void Update()
     {
-        //Debug.Log(playerscript.health + "  -  " + playerscript.shield);
-        //Debug.Log(playerscript.maxhealth + "  -  " + playerscript.maxshield);
         //if (entity.IsOwner && EntityCamera.gameObject.activeInHierarchy == false)
         //{
         //    EntityCamera.gameObject.SetActive(true);
@@ -257,18 +259,21 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
                 jetpackfuel += Time.deltaTime;
             }
         }
-
-        if (Input.GetAxis("JetPack") > 0 && Input.GetAxis("Jump") > 0  && jetpackfuel > 0)
+        if (Input.GetAxis("JetPack") < 0 && Input.GetAxis("Jump") > 0  && jetpackfuel > 0)
         {
             if (Velocity.y >= 0 && Velocity.y < jetpackmaxVel) //if velocity >= 0 apply a constant force until velocity is equal to 10
             {
                 Velocity.y += jetpackAcc * Time.deltaTime;
             }
-            else if (Velocity.y <= 0) //if velocity is < 0 apply a force that will cancel out gravity.  this creates a drag effect
+            else if (Velocity.y < 0) //if velocity is < 0 apply a force that will cancel out gravity.  this creates a drag effect
             {
                 Velocity.y += 10f * Time.deltaTime;
             }
-
+            if (transform.position == lastpos)
+            {
+                Velocity.y = 0;
+            }
+            lastpos = gameObject.transform.position;
             jetpackfuel -= Time.deltaTime;
         }
         else //if jetpack is not in use or is out of gas then player will fall 
@@ -276,6 +281,11 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             //-9.81m/s * t
             //Velocity.y += Gravity * Time.deltaTime;
             Velocity += Vector3.up * Gravity * (fallmult - 1) * Time.deltaTime; // increases fall gravity for better feel
+        }
+
+        if (Input.GetButtonUp("JetPack"))
+        {
+            Input.GetAxis("JetPack").Equals(0);
         }
     }
 
@@ -307,10 +317,11 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             cancrouch = false;
             IsGrounded = false;
         }
-        if (Input.GetButtonDown("Slide") && sliding == false && (!IsGrounded || Jumping))//player will slide in air
+        if (Input.GetButtonDown("Slide") && sliding == false && canSlide == true && (!IsGrounded || Jumping))//player will slide in air
         {
             sliding = true;
             firstslide = true;
+            canSlide = false;
             //CrouchTimer = 0;
         }
         if ((Input.GetButtonUp("Crouch") || Input.GetButtonUp("Slide")) && CanStand)//if there is nothing over the character he can stand back up
@@ -320,12 +331,13 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             CharController.height = height;
             //CrouchTimer = 0;
         }
-        if (Input.GetButtonDown("Slide") && sliding == false && cancrouch && !Jumping && IsGrounded)//player will slide
+        if (Input.GetButtonDown("Slide") && sliding == false && cancrouch && !Jumping && IsGrounded && canSlide)//player will slide
         {
             IsCrouching = true;
             CharController.height = height / 2;
             sliding = true;
             firstslide = true;
+            canSlide = false;
             //CrouchTimer = 0;
         }
         if (Input.GetButtonDown("Crouch") && !IsCrouching && cancrouch && !Jumping && IsGrounded)//player will crouch
@@ -338,14 +350,18 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     }
     void Slide()
     {
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
         if (sliding)//want to add behavior where slide will keep going and increase if going down an incline
         {
             if (firstslide)//initial slide speed
             {
-                slideDIR = transform.forward;//saves initial direction for slide
+                //slideDIR = transform.forward;//saves initial direction for slide
+                slideDIR = transform.right* x +transform.forward * z;
                 TempSlideSpeed = SlideSpeed;
                 SlideForce = slideDIR * SlideSpeed * Time.deltaTime;
                 firstslide = false;
+                slideTimer = 1;
             }
             if (TempSlideSpeed > 0)//slowly decreases sliding speed: fake friction
             {
@@ -359,6 +375,14 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             CharController.Move(SlideForce * Time.deltaTime);
         }
 
+        if (slideTimer >= 0)
+        {
+            slideTimer -= Time.deltaTime;
+        }
+        if (slideTimer <= 0)
+        {
+            canSlide = true;
+        }
         if (TempSlideSpeed <= 0)
         {
             sliding = false;

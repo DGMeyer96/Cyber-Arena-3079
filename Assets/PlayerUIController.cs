@@ -16,8 +16,10 @@ public class PlayerUIController : MonoBehaviour
 
     public void SetHealth(float health) 
     {
-        healthSlider.value = health;
-    }    
+        //healthSlider.value = health;
+        healthSlider.value = Mathf.Lerp(health, healthSlider.value, 1 * Time.deltaTime);
+
+    }
     public void setmaxShield(float Shield)//start with 0 shield
     {
         ShieldSlider.maxValue = Shield;
@@ -26,7 +28,7 @@ public class PlayerUIController : MonoBehaviour
 
     public void SetShield(float Shield) 
     {
-        ShieldSlider.value = Shield;
-        //ShieldSlider.value = Mathf.Lerp(Shield, ShieldSlider.value, 1* Time.deltaTime);
+        //ShieldSlider.value = Shield;
+        ShieldSlider.value = Mathf.Lerp(Shield, ShieldSlider.value, 1 * Time.deltaTime);
     }
 }

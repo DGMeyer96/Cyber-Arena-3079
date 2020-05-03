@@ -2145,6 +2145,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d59fa174d19fa14c859aee8db32f553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WeaponObjects:
+  - {fileID: 6481237322802752641}
+  - {fileID: 3265018681891541203}
+  - {fileID: 2297865607920036184}
+  - {fileID: 2347460675568060599}
   AmmoTracker: {fileID: 5891660334105379959}
   useable: 1
   CurrentAmmo: 0
@@ -2157,7 +2162,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5962487975875672546}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 131aa022caaa4eb4a86112d4d4a6bd18, type: 3}
   m_Name: 
@@ -2184,6 +2189,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunHolder: {fileID: 0}
+  ammoTracker: {fileID: 5891660334105379959}
+  weaponSwitch: {fileID: 8104914090231166660}
 --- !u!1 &6284093299417482261
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,7 +5,6 @@ using UnityEngine;
 public class weaponPosition : Bolt.EntityBehaviour<IBensState>
 {
     public GameObject gunHolder;
-
     public AmmoTracker ammoTracker;
     public WeaponSwitch weaponSwitch;
     void Update()
