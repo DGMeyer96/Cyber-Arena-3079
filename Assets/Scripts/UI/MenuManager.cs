@@ -9,8 +9,7 @@ public class MenuManager : MonoBehaviour
     public GameObject mainMenu;
     public GameObject optionsMenu;
     public GameObject controlsMenu;
-    public GameObject newGameMenu;
-    public GameObject loadGameMenu;
+    public GameObject hostGameMenu;
 
     public Texture2D dataErrorTex;
     public Texture2D dataFoundTex;
@@ -30,6 +29,47 @@ public class MenuManager : MonoBehaviour
         prevMenu.gameObject.SetActive(false);
     }
 
+    public void HostGame()
+    {
+        hostGameMenu.gameObject.SetActive(true);
+        mainMenu.gameObject.SetActive(false);
+    }
+
+    public void OptionsMenu()
+    {
+        optionsMenu.gameObject.SetActive(true);
+        mainMenu.gameObject.SetActive(false);
+    }
+
+    public void ControlsMenu()
+    {
+        controlsMenu.gameObject.SetActive(true);
+        optionsMenu.gameObject.SetActive(false);
+    }
+
+    public void BackToOptions()
+    {
+        optionsMenu.gameObject.SetActive(true);
+        controlsMenu.gameObject.SetActive(false);
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("Quitting Game");
+        Application.Quit();
+    }
+
+    public void OnFadeOutComplete()
+    {
+        SceneManager.LoadScene(1);
+        //PlayerPrefs.SetInt("LevelToLoad", 2);
+    }
+}
+
+
+
+
+/*
     public void NewGameMenu()
     {
         //Debug.Log("[GAMEMANAGER] New Game Menu");
@@ -202,59 +242,33 @@ public class MenuManager : MonoBehaviour
             loadGame3.transform.GetChild(3).GetComponent<Text>().text = "Play Time: N/A" + "\n" + "Date: N/A";
         }
     }
+    */
 
-    public void OptionsMenu()
-    {
-        optionsMenu.gameObject.SetActive(true);
-        mainMenu.gameObject.SetActive(false);
-    }
-
-    public void ControlsMenu()
-    {
-        controlsMenu.gameObject.SetActive(true);
-        optionsMenu.gameObject.SetActive(false);
-    }
-
-    public void BackToOptions()
-    {
-        optionsMenu.gameObject.SetActive(true);
-        controlsMenu.gameObject.SetActive(false);
-    }
-
-    public void QuitGame()
-    {
-        Debug.Log("Quitting Game");
-        Application.Quit();
-    }
-
-    public void SelectSaveGame(string saveGame)
-    {
-        saveGameName = saveGame;
-    }
-
-    public void NewGame()
-    {
-        PlayerPrefs.SetInt("NewGame", 1);
-        PlayerPrefs.SetString("SaveGameName", saveGameName);
-        PlayerPrefs.SetInt("LevelToLoad", 2);
-        animator.SetTrigger("FadeOut");
-        //gameObject.GetComponent<StartupLoader>().LoadLevel(1);
-        //SceneManager.LoadScene(0);
-    }
-
-    public void LoadGame()
-    {
-        Debug.Log("Loading... " + saveGameName);
-        PlayerPrefs.SetString("SaveGameName", saveGameName);
-        PlayerPrefs.SetInt("LevelToLoad", 2);
-        animator.SetTrigger("FadeOut");
-        //gameObject.GetComponent<StartupLoader>().LoadLevel(1);
-        //SceneManager.LoadScene(0);
-    }
-
-    public void OnFadeOutComplete()
-    {
-        SceneManager.LoadScene(1);
-        //PlayerPrefs.SetInt("LevelToLoad", 2);
-    }
+/*
+public void NewGame()
+{
+    PlayerPrefs.SetInt("NewGame", 1);
+    PlayerPrefs.SetString("SaveGameName", saveGameName);
+    PlayerPrefs.SetInt("LevelToLoad", 2);
+    animator.SetTrigger("FadeOut");
+    //gameObject.GetComponent<StartupLoader>().LoadLevel(1);
+    //SceneManager.LoadScene(0);
 }
+
+public void LoadGame()
+{
+    Debug.Log("Loading... " + saveGameName);
+    PlayerPrefs.SetString("SaveGameName", saveGameName);
+    PlayerPrefs.SetInt("LevelToLoad", 2);
+    animator.SetTrigger("FadeOut");
+    //gameObject.GetComponent<StartupLoader>().LoadLevel(1);
+    //SceneManager.LoadScene(0);
+}
+*/
+
+/*
+public void SelectSaveGame(string saveGame)
+{
+    saveGameName = saveGame;
+}
+*/

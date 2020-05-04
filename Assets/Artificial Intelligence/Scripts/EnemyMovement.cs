@@ -14,6 +14,9 @@ public class EnemyMovement : MonoBehaviour
     public bool playerDetected = false;
     public bool isThisLoss = false;
 
+    public Vector3 coverLocation;
+    public bool takeCover = false;
+
     [SerializeField]
     private float followTimer = 5.0f;
 
@@ -42,49 +45,52 @@ public class EnemyMovement : MonoBehaviour
                 GoToNextPoint();
             }
         }
-        else if (playerDetected && followTimer >= 0.0f)
+        else
         {
-            
-            if (isThisLoss)
+            if (!takeCover)
             {
-                navMesh.isStopped = true;
-                //followTimer -= Time.deltaTime;
+                navMesh.isStopped = false;
+                navMesh.destination = player.transform.position;
+                if (navMesh.remainingDistance < 20.0f)
+                {
+                    weapon.GetComponent<EnemyAttack>().isAttacking = true;                
+                }
+                if (navMesh.remainingDistance > 40.0f)
+                {
+                    weapon.GetComponent<EnemyAttack>().isAttacking = false;                    
+                }
             }
             else
             {
-                navMesh.isStopped = false;
-                followTimer -= Time.deltaTime;
-                navMesh.destination = player.transform.position;
-                if(navMesh.remainingDistance < 10.0f)
+                MoveToCover();
+                if(navMesh.remainingDistance < 2.0f)
+                {
+                    navMesh.isStopped = true;
+                    weapon.GetComponent<EnemyAttack>().isAttacking = true;
+
+                }
+
+                if (navMesh.remainingDistance < 10.0f)
                 {
                     weapon.GetComponent<EnemyAttack>().isAttacking = true;
                 }
-                else if(navMesh.remainingDistance > 40.0f)
+                else if (navMesh.remainingDistance > 40.0f)
                 {
                     weapon.GetComponent<EnemyAttack>().isAttacking = false;
                 }
             }
         }
-        if(followTimer <= 0)
-        {
-            playerDetected = false;
-            followTimer = 5.0f;
-        }
+    }
+
+    void MoveToCover()
+    {
+        navMesh.destination = coverLocation;
     }
 
     void GoToNextPoint()
     {
         if (targetpoints.Length == 0)
             return;
-        //if(!patrolling)
-        //{
-        //    waitTimer -= Time.deltaTime;
-        //    if(waitTimer < 0.0f)
-        //    {
-        //        waitTimer = 2.0f;
-        //    }
-        //    return;
-        //}
         if (navMesh.isStopped)
         {
             waitTimer -= Time.deltaTime;
@@ -98,9 +104,9 @@ public class EnemyMovement : MonoBehaviour
             }
             return;
         }
-            navMesh.destination = targetpoints[locationCounter].transform.position;
+        navMesh.destination = targetpoints[locationCounter].transform.position;
 
-            locationCounter = (locationCounter + 1) % targetpoints.Length;
+        locationCounter = (locationCounter + 1) % targetpoints.Length;
     }
 
 }

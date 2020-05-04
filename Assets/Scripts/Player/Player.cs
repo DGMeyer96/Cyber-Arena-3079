@@ -6,17 +6,32 @@ using System;
 public class Player : MonoBehaviour
 {
     public float health;
+    public float shield;
+    public float maxhealth = 100;
+    public float maxshield = 50;
     public Vector3 playerPosition;
     public Quaternion playerRotation;
     public string saveName;
     public float playTime = 0.0f;
     public string playDate;
     public byte[] texData;
-    public PlayerUI PlayerUI;
+    //public PlayerUI PlayerUI;
 
+    public PlayerUIController playerUIController;
+
+    public void Start()
+    {
+        health = 100;
+        shield = 0;
+        playerUIController.setmaxhealth(maxhealth);
+        playerUIController.setmaxShield(maxshield);
+    }
     public void NewGame()
     {
-        health = 10;
+        health = 100;
+        shield = 0;
+        playerUIController.setmaxhealth(maxhealth);
+        playerUIController.setmaxShield(maxshield);
         playTime = 0.0f;
 
         Debug.Log("[PLAYER] Creating new game: " + saveName);
@@ -54,10 +69,39 @@ public class Player : MonoBehaviour
         playerRotation.z = data.playerRotation[2];
     }
 
-    public void DamagePlayer(int damage)
+    public void DamagePlayer(float damage)
     {
-        health -= damage;
-        //Debug.Log("Damage: " + health);
-        PlayerUI.UpdateSlider(health);
+        if (shield == 0)
+        {
+            health -= damage;
+            playerUIController.SetHealth(health);
+        }
+        else if (shield != 0)
+        {
+            if (damage > shield)
+            {
+                damage -= shield;
+                shield = 0;
+                playerUIController.SetShield(shield);
+                DamagePlayer(damage);
+            }
+            else 
+            {
+                shield -= damage;
+                playerUIController.SetShield(shield);
+            }
+        }
+    }
+
+    public void HealPlayer(int addhealth)
+    {
+        health += addhealth;
+        playerUIController.SetHealth(health);
+    }
+
+    public void shieldPlayer(int addshield)
+    {
+        shield += addshield;
+        playerUIController.SetShield(shield);
     }
 }

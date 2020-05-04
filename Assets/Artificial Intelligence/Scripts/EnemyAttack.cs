@@ -24,8 +24,8 @@ public class EnemyAttack : MonoBehaviour
         if(isAttacking)
         {
             attackTimer -= 1.0f;
-            if(enemyObject.GetComponent<EnemyMovement>().isThisLoss == false)
-                enemyObject.GetComponent<EnemyMovement>().isThisLoss = true;
+            //if(enemyObject.GetComponent<EnemyMovement>().isThisLoss == false)
+            //    enemyObject.GetComponent<EnemyMovement>().isThisLoss = true;
             reloadSpeed -= Time.deltaTime;
 
                 Fire();
@@ -33,22 +33,19 @@ public class EnemyAttack : MonoBehaviour
 
         if(attackTimer <= 0)
         {
-            enemyObject.GetComponent<EnemyMovement>().isThisLoss = false;
+            //enemyObject.GetComponent<EnemyMovement>().isThisLoss = false;
             isAttacking = false;
             attackTimer = 3.0f;
         }
     }
 
     void Fire()
-    {
-        
+    {        
         if (reloadSpeed <= 0)
         {
-            Debug.Log("Firing");
+            //Debug.Log("Firing");
             GameObject bulletClone = Instantiate(bullet, bulletSpawn.transform.position, bulletSpawn.transform.rotation);
             reloadSpeed = 1.0f;
         }
-        
-
     }
 }
