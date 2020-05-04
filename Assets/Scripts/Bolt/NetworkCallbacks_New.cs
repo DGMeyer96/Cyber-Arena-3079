@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Bolt;
+using UnityEngine.SceneManagement;
 
 [BoltGlobalBehaviour]
 public class NetworkCallbacks_New : Bolt.GlobalEventListener
@@ -11,24 +12,37 @@ public class NetworkCallbacks_New : Bolt.GlobalEventListener
 
     public override void SceneLoadLocalDone(string scene)
     {
-        /*
-        GameObject tmp = GameObject.Find("SpawnPoints");
-        Debug.Log("Found: " + tmp.name);
-        for (int i = 0; i < tmp.transform.childCount; i++)
-        {
-            spawnPoints[i] = tmp.transform.GetChild(i).transform;
-            Debug.Log("Spawn Point: " + tmp.transform.GetChild(i).transform);
-        }
-        */
         SetupSpawnPoints();
 
-        //Transform spawn = spawnPoints[Random.Range(0, spawnPoints.Length)];
         int spawn = Random.Range(0, 7);
         var spawnPosition = spawnPositions[spawn];
         var spawnRotation = spawnRotations[spawn];
 
-        // instantiate cube
         BoltNetwork.Instantiate(BoltPrefabs.Player, spawnPosition, Quaternion.Euler(0, Random.Range(0, 360), 0));
+    }
+
+    public override void Disconnected(BoltConnection connection)
+    {
+        base.Disconnected(connection);
+        Debug.LogError("Disconnected: Quitting");
+        connection.Disconnect();
+        //Application.Quit();
+    }
+
+    public override void BoltShutdownBegin(AddCallback registerDoneCallback)
+    {
+        Debug.LogError("BoltShutdownBegin: Quitting");
+        Application.Quit();
+        base.BoltShutdownBegin(registerDoneCallback);
+    }
+
+    public override void EntityDetached(BoltEntity entity)
+    {
+        Debug.LogError("EntityDetached: Quitting");
+        //Application.Quit();
+        //SceneManager.LoadScene(0);
+        base.EntityDetached(entity);
+        entity.Controller.Disconnect();
     }
 
     void SetupSpawnPoints()
