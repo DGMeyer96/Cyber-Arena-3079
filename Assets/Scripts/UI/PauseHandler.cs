@@ -22,19 +22,31 @@ public class PauseHandler : Bolt.GlobalEventListener
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown("Cancel"))
         {
             Debug.Log("Pausing game");
 
-            if(gamePaused)
+            if (gamePaused)
             {
                 Resume();
             }
             else
             {
                 Pause();
-                Debug.LogError("Disconnecting");
+                //Debug.LogError("Disconnecting");
             }
+        }
+
+        if (gamePaused && Input.GetKeyDown(KeyCode.Y))
+        {
+            Debug.LogError("Disconnecting");
+            //QuitGame();
+            MainMenu();
+        }
+        
+        else if (gamePaused && Input.GetKeyDown(KeyCode.N))
+        {
+            Resume();
         }
 
         if(bDisconnect)
@@ -73,17 +85,17 @@ public class PauseHandler : Bolt.GlobalEventListener
 
     public void MainMenu()
     {
-        Debug.Log("Loading: Main Menu");
+        Debug.LogError("Loading: Main Menu");
         PlayerPrefs.SetInt("LevelToLoad", 0);
         //player.SaveGame();
-        BoltNetwork.Shutdown();
+        //BoltNetwork.Shutdown();
         animator.SetTrigger("FadeOut");
         //Time.timeScale = 1f;
     }
 
     public void QuitGame()
     {
-        Debug.Log("Quitting Game");
+        Debug.LogError("Quitting Game");
         PlayerPrefs.SetInt("LevelToLoad", 0);
         BoltNetwork.Shutdown();
         Application.Quit();
@@ -115,5 +127,6 @@ public class PauseHandler : Bolt.GlobalEventListener
     public void OnFadeOutComplete()
     {
         SceneManager.LoadScene(1);
+        BoltNetwork.Shutdown();
     }
 }
