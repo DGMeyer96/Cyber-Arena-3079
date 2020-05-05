@@ -8,7 +8,11 @@ public class PlayerUIController : MonoBehaviour
     public Slider healthSlider;
     public Slider ShieldSlider;
 
-    public void setmaxhealth(float health)//start with max health
+    public Text rifle;
+    public Text sniper;
+    public Text heavy;
+
+    public void setmaxhealth(float health)
     {
         healthSlider.maxValue = health;
         healthSlider.value = health;
@@ -16,11 +20,10 @@ public class PlayerUIController : MonoBehaviour
 
     public void SetHealth(float health) 
     {
-        //healthSlider.value = health;
         healthSlider.value = Mathf.Lerp(health, healthSlider.value, 1 * Time.deltaTime);
 
     }
-    public void setmaxShield(float Shield)//start with 0 shield
+    public void setmaxShield(float Shield)
     {
         ShieldSlider.maxValue = Shield;
         ShieldSlider.value = 0;
@@ -28,7 +31,13 @@ public class PlayerUIController : MonoBehaviour
 
     public void SetShield(float Shield) 
     {
-        //ShieldSlider.value = Shield;
         ShieldSlider.value = Mathf.Lerp(Shield, ShieldSlider.value, 1 * Time.deltaTime);
+    }
+
+    public void SetAmmo(float pistolammo, float rifleammo, float sniperammo, float heavyammo)
+    {
+        rifle.text = "Rifle: " + rifleammo.ToString();
+        sniper.text = "Sniper: " + sniperammo.ToString();
+        heavy.text = "Heavy: " + heavyammo.ToString();
     }
 }

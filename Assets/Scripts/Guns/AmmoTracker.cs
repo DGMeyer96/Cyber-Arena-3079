@@ -14,6 +14,8 @@ public class AmmoTracker : MonoBehaviour
     public int HeavyMaxAmmo;
 
     public GameObject ActiveGun;
+    public PlayerUIController playerUIController;
+
 
 
     // Start is called before the first frame update
@@ -26,11 +28,6 @@ public class AmmoTracker : MonoBehaviour
         HeavyMaxAmmo = 25;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     void FixedUpdate()
     {
         for (int i = 0; i < gameObject.transform.childCount; i++)
@@ -57,6 +54,8 @@ public class AmmoTracker : MonoBehaviour
         {
             Heavy();
         }
+
+        playerUIController.SetAmmo(PistolAmmo, RifleAmmo, SniperAmmo, HeavyAmmo);
     }
 
 

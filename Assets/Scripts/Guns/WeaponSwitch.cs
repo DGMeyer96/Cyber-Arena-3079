@@ -12,11 +12,6 @@ public class WeaponSwitch : Bolt.EntityEventListener<IBensState>
     public int SelectedWeapon = 0;
     public int NumOfWeapons;
 
-
-    private Renderer _renderer;
-    private float _resetColorTime;
-
-
     void Start()
     {
         SelectWeapon();
