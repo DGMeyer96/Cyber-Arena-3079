@@ -73,6 +73,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         //radius = CharController.radius;
         IsCrouching = false;
         CanJmp = true;
+        
     }
 
     private void Update()
@@ -96,6 +97,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
                 this.transform.position = SpawnPoints[spawn].position;
                 this.transform.rotation = SpawnPoints[spawn].rotation;
 
+                //this.transform.GetChild(0).transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
                 SpawnSet = true;
             }
         }
