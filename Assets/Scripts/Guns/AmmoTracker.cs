@@ -12,11 +12,8 @@ public class AmmoTracker : MonoBehaviour
     public int SniperMaxAmmo;    
     public int HeavyAmmo;
     public int HeavyMaxAmmo;
-
     public GameObject ActiveGun;
     public PlayerUIController playerUIController;
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -42,37 +39,11 @@ public class AmmoTracker : MonoBehaviour
         {
             Pistol();
         }
-        if (ActiveGun.transform.tag == ("Rifle"))
-        {
-            Rifle();
-        }
-        if (ActiveGun.transform.tag == ("Sniper"))
-        {
-            Sniper();
-        }
-        if (ActiveGun.transform.tag == ("Heavy"))
-        {
-            Heavy();
-        }
-
         playerUIController.SetAmmo(PistolAmmo, RifleAmmo, SniperAmmo, HeavyAmmo);
     }
-
 
     void Pistol() 
     {
         PistolAmmo = int.MaxValue;
-    }
-    void Rifle() 
-    {
-
-    }
-    void Sniper() 
-    {
-
-    }
-    void Heavy() 
-    {
-
     }
 }

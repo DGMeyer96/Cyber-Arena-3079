@@ -3,14 +3,13 @@ using System.Collections;
 
 public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 {
-    public Camera EntityCamera;
     public GameObject test;
     public CharacterController CharController;
     public Transform[] spawns;
 
     public AmmoTracker ammoTracker;
     public Player playerscript;
-    public PickupReset pickupReset;
+    //public PickupReset pickupReset;
 
     private float MoveSpeed;
     public float MovespeedControler = 12f;
@@ -45,8 +44,8 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     private Vector3 SlideForce; //Force for sliding;
     private Vector3 slideDIR;
     private Vector3 Velocity;
-    private Vector3 Vaultpos;//new pos after vualting
-    private Vector3 Climbpos;
+    //private Vector3 Vaultpos;//new pos after vualting
+    //private Vector3 Climbpos;
 
     public bool IsCrouching; //keeps track if the palyer is crouching or not
     public bool CanStand;//wont let palyer stands if something is blocking him
@@ -60,7 +59,6 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public bool cancrouch;
     public bool powerup;
     public bool canSlide;
-
     public bool CanJmp;
     public float JmpCount;
 
@@ -91,14 +89,9 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         }
         Jump();
         Crouch();//accepts continuous input for sliding and crouching
-        //if (!IsCrouching)
-        //{
-        //    Vualt();
-        //    Climb();//used for ledge detection
-        //}
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         //Check in a sphere if the floor is in range, like a collider check
         IsGrounded = Physics.CheckSphere(GroundCheck.position, GroundDistance, GroundMask, QueryTriggerInteraction.Ignore);
@@ -121,13 +114,6 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             OnSlope();//executes additional gravity to cause palyer to hug slopes
         }
     }
-
-    //public void SpawnPlayer()
-    //{
-    //    Transform tmp = spawns[Random.Range(0, spawns.Length)];
-    //    this.transform.position = tmp.position;
-    //    this.transform.rotation = tmp.rotation;
-    //}
 
     void Jump()
     {
