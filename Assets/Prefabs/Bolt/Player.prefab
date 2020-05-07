@@ -30,6 +30,29 @@ Transform:
   m_Father: {fileID: 1194188515237259540}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8045059925493559983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1004373565511601829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bcdabb85973e3e449316d4f7305a6a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 10
+  Range: 100
+  FireRate: 15
+  IsAutomatic: 0
+  sparkattack: {fileID: 5861953091012419126, guid: d73104ed00fbdb14b960c6f36fcc4aa4,
+    type: 3}
+  hitaffect: {fileID: 752976524433678014, guid: d73104ed00fbdb14b960c6f36fcc4aa4,
+    type: 3}
+  spreadfactor: 0.001
+  Muzzleflash: {fileID: 752976524433678014, guid: d73104ed00fbdb14b960c6f36fcc4aa4,
+    type: 3}
 --- !u!1 &1194188515075247716
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,6 +355,7 @@ GameObject:
   - component: {fileID: 7038699625328850017}
   - component: {fileID: 8326814768625631709}
   - component: {fileID: 777297161682814103}
+  - component: {fileID: 3351430655833318966}
   m_Layer: 13
   m_Name: Player
   m_TagString: Untagged
@@ -413,7 +437,6 @@ MonoBehaviour:
   EntityCamera: {fileID: 1194188515075247719}
   test: {fileID: 3310171813571565253}
   CharController: {fileID: 1194188515237259547}
-  spawns: []
   ammoTracker: {fileID: 415134590742144595}
   playerscript: {fileID: 1194188515237259546}
   pickupReset: {fileID: 0}
@@ -500,6 +523,21 @@ MonoBehaviour:
   _entityBehaviourQueryOption: 0
   _entityPriorityCalculatorQueryOption: 0
   _entityReplicationFilterQueryOption: 0
+--- !u!114 &3351430655833318966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194188515237259544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 394178eea437f0545b7dcf7a6d483c01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HealthAmount: 50
+  randomSpawn: 0
+  temptest: {fileID: 0}
 --- !u!1 &3310171813571565253
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,6 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public Camera EntityCamera;
     public GameObject test;
     public CharacterController CharController;
-    public Transform[] spawns;
 
     public AmmoTracker ammoTracker;
     public Player playerscript;
@@ -34,6 +33,9 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     private float height;//height of the character controller
     //private float radius;//radius of the character controller 
     //private float poweruptimer;
+
+    private float respawnTime = 3.0f;
+    private float timer = 0.0f;
 
     public Transform GroundCheck;
     public LayerMask GroundMask;
@@ -64,6 +66,10 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public bool SpawnSet = false;
     public bool gamePaused = false;
 
+    private GameObject SpawnObject;
+    private Transform[] SpawnPoints;
+    private bool dead = false;
+
     public override void Attached()
     {
         CharController = GetComponent<CharacterController>();
@@ -80,11 +86,11 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         if(!SpawnSet)
         {
             //Debug.LogError("Searching for SpawnPoints");
-            GameObject SpawnObject = GameObject.FindWithTag("Spawn");
+            SpawnObject = GameObject.FindWithTag("Spawn");
             if(SpawnObject != null)
             {
                 //int i = 0;
-                Transform[] SpawnPoints = new Transform[SpawnObject.transform.childCount];
+                SpawnPoints = new Transform[SpawnObject.transform.childCount];
 
                 for(int i = 0; i < SpawnObject.transform.childCount; i++)
                 {
@@ -97,6 +103,24 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
                 this.transform.rotation = SpawnPoints[spawn].rotation;
 
                 SpawnSet = true;
+            }
+        }
+
+        if (playerscript.health <= 0 && !dead)
+        {
+            Debug.LogError("Player Died");
+            Death();
+        }
+
+        if(dead)
+        {
+            timer += Time.deltaTime;
+            Debug.LogWarning("Timer: " + timer);
+            if (timer > respawnTime)
+            {
+                timer = timer - respawnTime;
+                Debug.LogError("Respawning Player");
+                Respawn();
             }
         }
 
@@ -150,13 +174,23 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             JmpCount = 0;
         }
 
-        JetPack();//accepst continuous input for jetpack
-        Movement();//executes movement force
-        Slide();//exectues sliding force     //add a slide cooldown
-        if (!sliding)
+        if(Input.GetKeyDown(KeyCode.K))
         {
-            OnSlope();//executes additional gravity to cause palyer to hug slopes
+            playerscript.health -= 25;
+            Debug.LogWarning("Health: " + playerscript.health);
         }
+
+        if(!dead)
+        {
+            JetPack();//accepst continuous input for jetpack
+            Movement();//executes movement force
+            Slide();//exectues sliding force     //add a slide cooldown
+            if (!sliding)
+            {
+                OnSlope();//executes additional gravity to cause palyer to hug slopes
+            }
+        }
+        
     }
 
     //public void SpawnPlayer()
@@ -451,6 +485,45 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         {
             CharController.Move(Vector3.down * height / 2 * SlopeForce * Time.deltaTime);
         }
+    }
+
+    void Death()
+    {
+        //Play Death animation
+
+        GetComponent<CharacterController>().enabled = false;
+        GetComponentInChildren<MouseLook>().enabled = false;
+        GetComponentInChildren<weaponPosition>().enabled = false;
+
+        dead = true;
+    }
+
+    void Respawn()
+    {
+        playerscript.health = 100;
+        playerscript.shield = 0;
+
+        SpawnObject = GameObject.FindWithTag("Spawn");
+        if (SpawnObject != null)
+        {
+            int spawn = Random.Range(0, 7);
+            this.transform.position = SpawnPoints[spawn].position;
+            this.transform.rotation = SpawnPoints[spawn].rotation;
+        }
+
+        //Reset Aniamtion
+
+        GetComponent<CharacterController>().enabled = true;
+        GetComponentInChildren<MouseLook>().enabled = true;
+        GetComponentInChildren<weaponPosition>().enabled = true;
+
+        dead = false;
+    }
+
+    public void TakeDamage(float damageTaken)
+    {
+        playerscript.health -= damageTaken;
+        Debug.Log("Health is : " + playerscript.health);
     }
 
     private void OnTriggerEnter(Collider other)

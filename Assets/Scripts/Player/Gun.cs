@@ -85,13 +85,6 @@ public class Gun : MonoBehaviour
         {
 
 
-
-
-
-
-
-
-
             Debug.DrawLine(transform.position, hit.point, Color.green, 5.0f);
 
 
@@ -101,44 +94,17 @@ public class Gun : MonoBehaviour
             hitaffect.SetVector3(sparkdirection, hit.normal);             //Current issue it won't let me assign my visual effect why not?
                                                                           //Previous issue resolved, now they are just giving it NaNs google searches have revealed the code is giving someone their grandma will need to research why
 
-
-
-
             Debug.Log("player position: " + transform.position + " And hit position: " + hit.normal + " And reflection direction" + reflection);
 
 
             Debug.DrawLine(hit.point, reflection, Color.cyan, 5.0f);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             GameObject temp = Instantiate(sparkattack, hit.point, Quaternion.identity);
             Destroy(temp, 1.0f);
-            if(hit.collider.GetComponent<Health>())
+            if(hit.collider.GetComponent<BoltPlayerBehavior>())
             {
-                hit.collider.GetComponent<Health>().TakeDamage(Damage);
+                hit.collider.GetComponent<BoltPlayerBehavior>().TakeDamage(Damage);
             }
         }
     }
