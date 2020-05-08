@@ -18,7 +18,7 @@ public class NetworkCallbacks_New : Bolt.GlobalEventListener
         var spawnPosition = spawnPositions[spawn];
         var spawnRotation = spawnRotations[spawn];
 
-        BoltNetwork.Instantiate(BoltPrefabs.Player, spawnPosition, Quaternion.Euler(0, Random.Range(0, 360), 0));
+        BoltNetwork.Instantiate(BoltPrefabs.Chad, spawnPosition, Quaternion.Euler(0, Random.Range(0, 360), 0));
     }
 
     public override void Disconnected(BoltConnection connection)
