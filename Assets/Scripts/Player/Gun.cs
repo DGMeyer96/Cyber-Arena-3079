@@ -18,7 +18,11 @@ public class Gun : MonoBehaviour
     private float NextTimeToFire = 0f;      //Temp cooldown of firing weapon works with fire rate and then checks its size vs firecooldown to run
 
 
-
+    public Camera cam;
+    public GameObject startpoint;
+    public LineRenderer lr;
+    public GameObject line;
+    public float maxlength;
 
     /*
     TODO:
@@ -33,9 +37,14 @@ public class Gun : MonoBehaviour
     Fire rate -> the lower the number the higher the rate  
       
     */
+    void Start()
+    {
+        line.SetActive(false);
+    }
 
     void Update()
     {
+
         if(IsAutomatic)
         {
             NextTimeToFire += Time.deltaTime + 1f / FireRate;
@@ -83,14 +92,21 @@ public class Gun : MonoBehaviour
         direction.z += Random.Range(-spreadfactor, spreadfactor);
         if (Physics.Raycast(transform.position, direction, out RaycastHit hit,Range))
         {
+          //  line.SetActive(true);
+            lr.SetPosition(0, startpoint.transform.position);
 
 
+            lr.SetPosition(1, hit.point);
 
+           // Invoke("Disable", 0.3f);
 
+            GameObject obj = Instantiate(line, line.transform.position, Quaternion.identity);
+            Debug.Log("obj" +obj.transform.position);
+            obj.SetActive(true);
 
-
-
-
+            obj.gameObject.GetComponent<LineRenderer>().SetPosition(0, startpoint.transform.position);
+            obj.gameObject.GetComponent<LineRenderer>().SetPosition(1, hit.point);
+            Destroy(obj, 0.1f);
 
             Debug.DrawLine(transform.position, hit.point, Color.green, 5.0f);
 
@@ -115,25 +131,6 @@ public class Gun : MonoBehaviour
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             GameObject temp = Instantiate(sparkattack, hit.point, Quaternion.identity);
             Destroy(temp, 1.0f);
             if(hit.collider.GetComponent<Health>())
@@ -141,5 +138,12 @@ public class Gun : MonoBehaviour
                 hit.collider.GetComponent<Health>().TakeDamage(Damage);
             }
         }
+    }
+
+
+    void Disable()
+    {
+        line.SetActive(false);
+
     }
 }
