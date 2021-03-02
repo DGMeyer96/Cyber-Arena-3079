@@ -125,9 +125,9 @@ public class Gun : Bolt.EntityBehaviour<IBensState>
 
             GameObject temp = Instantiate(sparkattack, hit.point, Quaternion.identity);
             Destroy(temp, 1.0f);
-            if(hit.collider.GetComponent<Health>())
+            if(hit.collider.GetComponent<BoltPlayerBehavior>())
             {
-                hit.collider.GetComponent<Health>().TakeDamage(Damage);
+                hit.collider.GetComponent<BoltPlayerBehavior>().TakeDamage(Damage);
             }
         }
     }

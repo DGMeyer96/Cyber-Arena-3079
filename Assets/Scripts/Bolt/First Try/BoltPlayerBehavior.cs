@@ -69,6 +69,13 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public bool SpawnSet = false;
     public bool gamePaused = false;
 
+
+    private GameObject SpawnObject;
+    private Transform[] SpawnPoints;
+    private bool dead = false;
+    private float respawnTime = 3.0f;
+    private float timer = 0.0f;
+
     public override void Attached()
     {
         CharController = GetComponent<CharacterController>();
@@ -85,13 +92,13 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         if(!SpawnSet)
         {
             //Debug.LogError("Searching for SpawnPoints");
-            GameObject SpawnObject = GameObject.FindWithTag("Spawn");
-            if(SpawnObject != null)
+            SpawnObject = GameObject.FindWithTag("Spawn");
+            if (SpawnObject != null)
             {
                 //int i = 0;
-                Transform[] SpawnPoints = new Transform[SpawnObject.transform.childCount];
+                SpawnPoints = new Transform[SpawnObject.transform.childCount];
 
-                for(int i = 0; i < SpawnObject.transform.childCount; i++)
+                for (int i = 0; i < SpawnObject.transform.childCount; i++)
                 {
                     Debug.LogError("Spawn point: " + SpawnObject.transform.GetChild(i).transform);
                     SpawnPoints[i] = SpawnObject.transform.GetChild(i).transform;
@@ -102,6 +109,23 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
                 this.transform.rotation = SpawnPoints[spawn].rotation;
 
                 SpawnSet = true;
+            }
+        }
+        if (playerscript.health <= 0 && !dead)
+        {
+            Debug.LogError("Player Died");
+            Death();
+        }
+
+        if (dead)
+        {
+            timer += Time.deltaTime;
+            Debug.LogWarning("Timer: " + timer);
+            if (timer > respawnTime)
+            {
+                timer = timer - respawnTime;
+                Debug.LogError("Respawning Player");
+                Respawn();
             }
         }
 
@@ -189,7 +213,44 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             JmpCount++;
         }
     }
+    void Death()
+    {
+        //Play Death animation 
 
+        GetComponent<CharacterController>().enabled = false;
+        GetComponentInChildren<MouseLook>().enabled = false;
+        GetComponentInChildren<weaponPosition>().enabled = false;
+
+        dead = true;
+    }
+
+    void Respawn()
+    {
+        playerscript.health = 100;
+        playerscript.shield = 0;
+
+        SpawnObject = GameObject.FindWithTag("Spawn");
+        if (SpawnObject != null)
+        {
+            int spawn = Random.Range(0, 7);
+            this.transform.position = SpawnPoints[spawn].position;
+            this.transform.rotation = SpawnPoints[spawn].rotation;
+        }
+
+        //Reset Aniamtion 
+
+        GetComponent<CharacterController>().enabled = true;
+        GetComponentInChildren<MouseLook>().enabled = true;
+        GetComponentInChildren<weaponPosition>().enabled = true;
+
+        dead = false;
+    }
+
+    public void TakeDamage(float damageTaken)
+    {
+        playerscript.health -= damageTaken;
+        Debug.Log("Health is : " + playerscript.health);
+    }
     /*
     void Vualt()
     {
