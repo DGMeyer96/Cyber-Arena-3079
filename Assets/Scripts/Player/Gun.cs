@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Experimental.VFX;
 
-public class Gun : MonoBehaviour
+public class Gun : Bolt.EntityBehaviour<IBensState>
 {
     public float Damage = 10f;
     public float Range = 100f;
@@ -42,6 +42,11 @@ public class Gun : MonoBehaviour
         line.SetActive(false);
     }
 
+    public override void Attached()
+    {
+        state.OnShoot = Shoot;
+    }
+
     void Update()
     {
 
@@ -57,7 +62,7 @@ public class Gun : MonoBehaviour
                 {
                     NextTimeToFire = 0;
                     Debug.Log("fires");
-                    Shoot();
+                    state.Shoot();
                 }
             }
             else
@@ -77,7 +82,7 @@ public class Gun : MonoBehaviour
           //          Muzzleflash.SendEvent("OnFire");
                     NextTimeToFire = 0;
                     Debug.Log("fires");
-                    Shoot();
+                    state.Shoot();
         //            Muzzleflash.SendEvent("OnStopFire");
                 }
             }
@@ -95,7 +100,6 @@ public class Gun : MonoBehaviour
           //  line.SetActive(true);
             lr.SetPosition(0, startpoint.transform.position);
 
-
             lr.SetPosition(1, hit.point);
 
            // Invoke("Disable", 0.3f);
@@ -110,26 +114,14 @@ public class Gun : MonoBehaviour
 
             Debug.DrawLine(transform.position, hit.point, Color.green, 5.0f);
 
-
-
             reflection = Vector3.Reflect(transform.position, hit.normal);     //Wall directions are not the same so I can't use vector.reflect, but it doesn't matter anyway because the particles are not following the vector.reflect
             
             hitaffect.SetVector3(sparkdirection, hit.normal);             //Current issue it won't let me assign my visual effect why not?
                                                                           //Previous issue resolved, now they are just giving it NaNs google searches have revealed the code is giving someone their grandma will need to research why
 
-
-
-
             Debug.Log("player position: " + transform.position + " And hit position: " + hit.normal + " And reflection direction" + reflection);
 
-
             Debug.DrawLine(hit.point, reflection, Color.cyan, 5.0f);
-
-
-
-
-
-
 
             GameObject temp = Instantiate(sparkattack, hit.point, Quaternion.identity);
             Destroy(temp, 1.0f);

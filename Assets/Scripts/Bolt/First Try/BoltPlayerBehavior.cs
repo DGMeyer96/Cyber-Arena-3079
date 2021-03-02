@@ -4,14 +4,16 @@ using System.Collections.Generic;
 
 public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
 {
-    public Camera EntityCamera;
+    //public Camera EntityCamera;
+    public GameObject EntityCamera;
+    public GameObject RenderObject; 
     public GameObject test;
     public CharacterController CharController;
     public Transform[] spawns;
 
     public AmmoTracker ammoTracker;
     public Player playerscript;
-    public PickupReset pickupReset;
+    //public PickupReset pickupReset;
 
     private float MoveSpeed;
     public float MovespeedControler = 12f;
@@ -30,10 +32,12 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public float GroundDistance = 0.4f;
     public float SlopeRayLength = 1f;
     public float SlopeForce = 1f;
+    public float slideTimer;
     //private float CrouchTimer;//sets a timer before the palyer can double jump
     private float height;//height of the character controller
     //private float radius;//radius of the character controller 
     //private float poweruptimer;
+    public Vector3 lastpos;
 
     public Transform GroundCheck;
     public LayerMask GroundMask;
@@ -43,8 +47,8 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     private Vector3 SlideForce; //Force for sliding;
     private Vector3 slideDIR;
     private Vector3 Velocity;
-    private Vector3 Vaultpos;//new pos after vualting
-    private Vector3 Climbpos;
+    //private Vector3 Vaultpos;//new pos after vualting
+    //private Vector3 Climbpos;
 
     public bool IsCrouching; //keeps track if the palyer is crouching or not
     public bool CanStand;//wont let palyer stands if something is blocking him
@@ -55,6 +59,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     public bool IsGrounded;
     public bool Jumping;
     public bool IsOnSlope;
+    public bool canSlide;
     public bool cancrouch;
     public bool powerup;
 
@@ -110,17 +115,21 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         {
             test.gameObject.SetActive(true);
         }
+        if (entity.IsOwner && RenderObject.gameObject.activeInHierarchy == true)//enable every character render except the current players
+        {
+            RenderObject.gameObject.SetActive(false);
+        }
         if (entity.IsOwner && CharController.enabled == false && gamePaused == false)
         {
             CharController.enabled = true;
         }
 
-        if(gamePaused == true)
+        if (entity.IsOwner && gamePaused == true)
         {
             CharController.enabled = false;
             EntityCamera.GetComponent<MouseLook>().enabled = false;
         }
-        if(gamePaused == false)
+        if (entity.IsOwner && gamePaused == false)
         {
             CharController.enabled = true;
             EntityCamera.GetComponent<MouseLook>().enabled = true;
@@ -297,17 +306,22 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             }
         }
 
-        if (Input.GetAxis("JetPack") > 0 && Input.GetAxis("Jump") > 0  && jetpackfuel > 0)
+        if (Input.GetAxis("JetPack") < 0 && Input.GetAxis("Jump") > 0 && jetpackfuel > 0)
         {
             if (Velocity.y >= 0 && Velocity.y < jetpackmaxVel) //if velocity >= 0 apply a constant force until velocity is equal to 10
             {
                 Velocity.y += jetpackAcc * Time.deltaTime;
             }
-            else if (Velocity.y <= 0) //if velocity is < 0 apply a force that will cancel out gravity.  this creates a drag effect
+            else if (Velocity.y < 0) //if velocity is < 0 apply a force that will cancel out gravity.  this creates a drag effect
             {
                 Velocity.y += 10f * Time.deltaTime;
             }
 
+            if (transform.position == lastpos)
+            {
+                Velocity.y = 0;
+            }
+            lastpos = gameObject.transform.position;
             jetpackfuel -= Time.deltaTime;
         }
         else //if jetpack is not in use or is out of gas then player will fall 
@@ -315,6 +329,10 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             //-9.81m/s * t
             //Velocity.y += Gravity * Time.deltaTime;
             Velocity += Vector3.up * Gravity * (fallmult - 1) * Time.deltaTime; // increases fall gravity for better feel
+        }
+        if (Input.GetButtonUp("JetPack"))
+        {
+            Input.GetAxis("JetPack").Equals(0);
         }
     }
 

@@ -439,13 +439,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b435aaabf82c4ee4c989034293c89c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EntityCamera: {fileID: 1194188515075247719}
+  EntityCamera: {fileID: 1194188515075247716}
+  RenderObject: {fileID: 1194188515128536532}
   test: {fileID: 3310171813571565253}
   CharController: {fileID: 1194188515237259547}
   spawns: []
   ammoTracker: {fileID: 415134590742144595}
   playerscript: {fileID: 1194188515237259546}
-  pickupReset: {fileID: 0}
   MovespeedControler: 12
   JumpHeight: 3
   SlideSpeed: 1000
@@ -459,6 +459,8 @@ MonoBehaviour:
   GroundDistance: 0.4
   SlopeRayLength: 1
   SlopeForce: 10
+  slideTimer: 0
+  lastpos: {x: 0, y: 0, z: 0}
   GroundCheck: {fileID: 6229529720501427827}
   GroundMask:
     serializedVersion: 2
@@ -480,6 +482,7 @@ MonoBehaviour:
   IsGrounded: 0
   Jumping: 0
   IsOnSlope: 0
+  canSlide: 0
   cancrouch: 0
   powerup: 0
   CanJmp: 0
@@ -1014,11 +1017,31 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6848976675529477152, guid: d2170e936f3ce0e439551a15eccb3b33,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6848976675529477152, guid: d2170e936f3ce0e439551a15eccb3b33,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6964628763711790686, guid: d2170e936f3ce0e439551a15eccb3b33,
         type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 1194188515237259546}
+    - target: {fileID: 7026513344816331095, guid: d2170e936f3ce0e439551a15eccb3b33,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7026513344816331095, guid: d2170e936f3ce0e439551a15eccb3b33,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2170e936f3ce0e439551a15eccb3b33, type: 3}
 --- !u!114 &4969625145755114914 stripped
