@@ -1,33 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Bolt;
 
 
-public class Health : MonoBehaviour
+public class Health : Bolt.EntityBehaviour<IBensState>
 {
-    public float HealthAmount = 50f;
+    /*
+    public int localHealth;
     public int randomSpawn;
     public GameObject temptest;
     void Start()
     {
         temptest = GameObject.Find("SpawnBitch");
+        localHealth = 50;
     }
-    public void TakeDamage(float damageTaken)
+    public override void Attached()
     {
-        HealthAmount -= damageTaken;
-        Debug.Log("Health is : " + HealthAmount);
-        if (HealthAmount <= 0)
+        if (entity.IsOwner)
+        {
+            state.Health = localHealth;
+        }
+        state.AddCallback("Health", HealthCallback);
+    }
+    private void HealthCallback()
+    {
+        localHealth = state.Health;
+        if (localHealth <= 0)
         {
             randomSpawn = Random.Range(0, 7);
             Death();
         }
     }
+    public void TakeDamage(int damageTaken)
+    {
+        //HealthAmount -= damageTaken;
+        state.Health -= damageTaken;
+        Debug.Log("Health is : " + localHealth);
+
+
+    }
     //TODO I need to have it respawn rather than delete self
     void Death()
     {
         GameObject SpawnObject = GameObject.FindWithTag("Spawn");
-        if (SpawnObject != null)
+        if (SpawnObject != null && entity.IsOwner)
         {
             //int i = 0;
             Transform[] SpawnPoints = new Transform[SpawnObject.transform.childCount];
@@ -42,23 +58,25 @@ public class Health : MonoBehaviour
             this.transform.position = SpawnPoints[spawn].position;
             this.transform.rotation = SpawnPoints[spawn].rotation;
 
-            HealthAmount = 100f;
+            localHealth = 50;
+            state.Health = localHealth;
         }
-            /*
-            // gameObject.SetActive(false);
-            //Destroy(gameObject);
-           // Debug.Log("I SWEAR TO GOD THIS BETTER COME BACK RIGHT" + temptest.GetComponent<MP_Level_1_Spawn_Data>().spawnPositions[randomSpawn]);
+            
+           // // gameObject.SetActive(false);
+           // //Destroy(gameObject);
+           //// Debug.Log("I SWEAR TO GOD THIS BETTER COME BACK RIGHT" + temptest.GetComponent<MP_Level_1_Spawn_Data>().spawnPositions[randomSpawn]);
 
-            Vector3 spawnposition;
-            Debug.Log("I SWEAR TO GOD THIS BETTER COME BACK RIGHT" + spawnposition);
+           // Vector3 spawnposition;
+           // Debug.Log("I SWEAR TO GOD THIS BETTER COME BACK RIGHT" + spawnposition);
 
-            Quaternion spawnrotation;
-            //BoltNetwork.Instantiate(BoltPrefabs.Player, spawnposition, spawnrotation);
-            gameObject.transform.position = spawnposition;
-            Debug.Log("Hello?");
-            Debug.Log("Should be correct" + gameObject.transform.position);
-            gameObject.transform.rotation = spawnrotation;
-            HealthAmount = 50f;
-            */
+           // Quaternion spawnrotation;
+           // //BoltNetwork.Instantiate(BoltPrefabs.Player, spawnposition, spawnrotation);
+           // gameObject.transform.position = spawnposition;
+           // Debug.Log("Hello?");
+           // Debug.Log("Should be correct" + gameObject.transform.position);
+           // gameObject.transform.rotation = spawnrotation;
+           // HealthAmount = 50f;
+            
         }
+*/
 }

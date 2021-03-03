@@ -91,7 +91,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     {
         if(!SpawnSet)
         {
-            //Debug.LogError("Searching for SpawnPoints");
+           //Debug.LogError("Searching for SpawnPoints");
             SpawnObject = GameObject.FindWithTag("Spawn");
             if (SpawnObject != null)
             {
@@ -111,23 +111,23 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
                 SpawnSet = true;
             }
         }
-        if (playerscript.health <= 0 && !dead)
-        {
-            Debug.LogError("Player Died");
-            Death();
-        }
+        //if (playerscript.localHealth <= 0 && !dead)
+        //{
+        //    Debug.LogError("Player Died");
+        //    Death();
+        //}
 
-        if (dead)
-        {
-            timer += Time.deltaTime;
-            Debug.LogWarning("Timer: " + timer);
-            if (timer > respawnTime)
-            {
-                timer = timer - respawnTime;
-                Debug.LogError("Respawning Player");
-                Respawn();
-            }
-        }
+        //if (dead)
+        //{
+        //    timer += Time.deltaTime;
+        //    Debug.LogWarning("Timer: " + timer);
+        //    if (timer > respawnTime)
+        //    {
+        //        timer = timer - respawnTime;
+        //        Debug.LogError("Respawning Player");
+        //        Respawn();
+        //    }
+        //}
 
         //Debug.Log(playerscript.health + "  -  " + playerscript.shield);
         //Debug.Log(playerscript.maxhealth + "  -  " + playerscript.maxshield);
@@ -213,44 +213,39 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             JmpCount++;
         }
     }
-    void Death()
-    {
-        //Play Death animation 
+    //void Death()
+    //{
+    //    //Play Death animation 
 
-        GetComponent<CharacterController>().enabled = false;
-        GetComponentInChildren<MouseLook>().enabled = false;
-        GetComponentInChildren<weaponPosition>().enabled = false;
+    //    GetComponent<CharacterController>().enabled = false;
+    //    GetComponentInChildren<MouseLook>().enabled = false;
+    //    GetComponentInChildren<weaponPosition>().enabled = false;
 
-        dead = true;
-    }
+    //    dead = true;
+    //}
 
-    void Respawn()
-    {
-        playerscript.health = 100;
-        playerscript.shield = 0;
+    //void Respawn()
+    //{
+    //    playerscript.localHealth = 50;
+    //    playerscript.shield = 0;
 
-        SpawnObject = GameObject.FindWithTag("Spawn");
-        if (SpawnObject != null)
-        {
-            int spawn = Random.Range(0, 7);
-            this.transform.position = SpawnPoints[spawn].position;
-            this.transform.rotation = SpawnPoints[spawn].rotation;
-        }
+    //    SpawnObject = GameObject.FindWithTag("Spawn");
+    //    if (SpawnObject != null && entity.IsOwner)
+    //    {
+    //        int spawn = Random.Range(0, 7);
+    //        this.transform.position = SpawnPoints[spawn].position;
+    //        this.transform.rotation = SpawnPoints[spawn].rotation;
+    //    }
 
-        //Reset Aniamtion 
+    //    //Reset Aniamtion 
 
-        GetComponent<CharacterController>().enabled = true;
-        GetComponentInChildren<MouseLook>().enabled = true;
-        GetComponentInChildren<weaponPosition>().enabled = true;
+    //    GetComponent<CharacterController>().enabled = true;
+    //    GetComponentInChildren<MouseLook>().enabled = true;
+    //    GetComponentInChildren<weaponPosition>().enabled = true;
 
-        dead = false;
-    }
+    //    dead = false;
+    //}
 
-    public void TakeDamage(float damageTaken)
-    {
-        playerscript.health -= damageTaken;
-        Debug.Log("Health is : " + playerscript.health);
-    }
     /*
     void Vualt()
     {
@@ -555,7 +550,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
         }        
         if (other.gameObject.tag == "Health")
         {
-            if (playerscript.health < playerscript.maxhealth)
+            if (playerscript.localHealth < playerscript.maxhealth)
             {
                 other.GetComponent<PickupReset>().holder.SetActive(false);
                 playerscript.HealPlayer(20);
@@ -567,4 +562,11 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
             powerup = true;
         }
     }
+    //public void TeleportPlayer(Transform pos)
+    //{
+    //    state.SetTeleport(state.PlayerTransform);
+    //    this.transform.position = pos.transform.position;
+
+    //    //transform.TransformPoint(pos.transform.position);
+    //}
 }

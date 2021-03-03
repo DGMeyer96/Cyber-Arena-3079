@@ -3,7 +3,7 @@ using UnityEngine.Experimental.VFX;
 
 public class Gun : Bolt.EntityBehaviour<IBensState>
 {
-    public float Damage = 10f;
+    public int Damage = 10;
     public float Range = 100f;
     public float FireRate = 15f; //lower the number the higher the rate NEVER set to 1
     public bool IsAutomatic = false;
@@ -53,15 +53,15 @@ public class Gun : Bolt.EntityBehaviour<IBensState>
         if(IsAutomatic)
         {
             NextTimeToFire += Time.deltaTime + 1f / FireRate;
-            if (Input.GetButton("Fire1"))
+            if (Input.GetButton("Fire1") && entity.IsOwner)
             {
              //   Muzzleflash.SendEvent("OnFire");
-                Debug.Log(NextTimeToFire);
+                //Debug.Log(NextTimeToFire);
 
                 if (NextTimeToFire > firecooldown)
                 {
                     NextTimeToFire = 0;
-                    Debug.Log("fires");
+                    //Debug.Log("fires");
                     state.Shoot();
                 }
             }
@@ -73,15 +73,15 @@ public class Gun : Bolt.EntityBehaviour<IBensState>
         else  // Single fire this is ok but what if player fires as fast as they can pull trigger? More damage than full auto *MUST fix*
         {       //For now I will do it similar to the full auto check, but I question if there is a better alternative, maybe sit down and think of alternate ideas to run better
             NextTimeToFire += Time.deltaTime + 1f / FireRate;
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && entity.IsOwner)
             {
-                Debug.Log(NextTimeToFire);
+                //Debug.Log(NextTimeToFire);
 
                 if (NextTimeToFire > firecooldown)
                 {
           //          Muzzleflash.SendEvent("OnFire");
                     NextTimeToFire = 0;
-                    Debug.Log("fires");
+                    //Debug.Log("fires");
                     state.Shoot();
         //            Muzzleflash.SendEvent("OnStopFire");
                 }
@@ -105,7 +105,7 @@ public class Gun : Bolt.EntityBehaviour<IBensState>
            // Invoke("Disable", 0.3f);
 
             GameObject obj = Instantiate(line, line.transform.position, Quaternion.identity);
-            Debug.Log("obj" +obj.transform.position);
+            //Debug.Log("obj" +obj.transform.position);
             obj.SetActive(true);
 
             obj.gameObject.GetComponent<LineRenderer>().SetPosition(0, startpoint.transform.position);
@@ -119,7 +119,7 @@ public class Gun : Bolt.EntityBehaviour<IBensState>
             hitaffect.SetVector3(sparkdirection, hit.normal);             //Current issue it won't let me assign my visual effect why not?
                                                                           //Previous issue resolved, now they are just giving it NaNs google searches have revealed the code is giving someone their grandma will need to research why
 
-            Debug.Log("player position: " + transform.position + " And hit position: " + hit.normal + " And reflection direction" + reflection);
+            //Debug.Log("player position: " + transform.position + " And hit position: " + hit.normal + " And reflection direction" + reflection);
 
             Debug.DrawLine(hit.point, reflection, Color.cyan, 5.0f);
 
@@ -127,7 +127,7 @@ public class Gun : Bolt.EntityBehaviour<IBensState>
             Destroy(temp, 1.0f);
             if(hit.collider.GetComponent<BoltPlayerBehavior>())
             {
-                hit.collider.GetComponent<BoltPlayerBehavior>().TakeDamage(Damage);
+                hit.collider.GetComponent<Player>().TakeDamage(Damage);
             }
         }
     }

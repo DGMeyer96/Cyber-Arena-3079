@@ -16,7 +16,7 @@ public class PlayerData
 
     public PlayerData(Player player)
     {
-        health = player.health;
+        health = player.localHealth;
 
         playerPosition = new float[3];
         playerPosition[0] = player.transform.position.x;
