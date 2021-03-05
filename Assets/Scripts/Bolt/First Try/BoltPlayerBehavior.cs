@@ -76,6 +76,7 @@ public class BoltPlayerBehavior : Bolt.EntityBehaviour<IBensState>
     private float respawnTime = 3.0f;
     private float timer = 0.0f;
 
+
     public override void Attached()
     {
         CharController = GetComponent<CharacterController>();

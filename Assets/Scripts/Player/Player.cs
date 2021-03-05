@@ -19,6 +19,7 @@ public class Player : Bolt.EntityBehaviour<IBensState>
 
     public PlayerUIController playerUIController;
 
+    private AudioSource source;
 
     public int localHealth;
     public int randomSpawn;
@@ -32,6 +33,7 @@ public class Player : Bolt.EntityBehaviour<IBensState>
         shield = 0;
         playerUIController.setmaxhealth(maxhealth);
         playerUIController.setmaxShield(maxshield);
+        source = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -81,6 +83,7 @@ public class Player : Bolt.EntityBehaviour<IBensState>
     void Death()
     {
         GameObject SpawnObject = GameObject.FindWithTag("Spawn");
+        source.Play();
         if (SpawnObject != null && entity.IsOwner)
         {
             Transform[] SpawnPoints = new Transform[SpawnObject.transform.childCount];

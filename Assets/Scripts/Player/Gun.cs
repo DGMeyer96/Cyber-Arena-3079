@@ -23,6 +23,8 @@ public class Gun : Bolt.EntityBehaviour<IBensState>
     public LineRenderer lr;
     public GameObject line;
     public float maxlength;
+    private AudioSource source;
+
 
     /*
     TODO:
@@ -40,6 +42,7 @@ public class Gun : Bolt.EntityBehaviour<IBensState>
     void Start()
     {
         line.SetActive(false);
+        source = GetComponent<AudioSource>();
     }
 
     public override void Attached()
@@ -91,6 +94,7 @@ public class Gun : Bolt.EntityBehaviour<IBensState>
 
     void Shoot()
     {
+        source.Play();
         Vector3 direction = transform.forward;
         direction.x += Random.Range(-spreadfactor, spreadfactor);
         direction.y += Random.Range(-spreadfactor, spreadfactor);
